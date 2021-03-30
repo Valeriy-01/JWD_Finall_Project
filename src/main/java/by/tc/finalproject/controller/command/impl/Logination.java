@@ -1,0 +1,64 @@
+package by.tc.finalproject.controller.command.impl;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
+import by.tc.finalproject.bean.User;
+import by.tc.finalproject.controller.command.Command;
+import by.tc.finalproject.dao.pool.ConnectionPool;
+import by.tc.finalproject.service.ServiceProvider;
+import by.tc.finalproject.service.exception.ServiceException;
+
+public class Logination implements Command {
+	private final static String USER = "user";
+	private final static String EMAIL = "email";
+	private final static String PASSWORD = "password";
+	private final static String PATH_TO_ADMIN_PAGE_COMMAND = "Controller?command=gotoadminpage";
+	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
+	private final static String PATH_TO_PERSONAL_ACCOUNT_COMMAND = "Controller?command=gotopersonpage";
+
+	private final static String USER_SESSION = "userSession";
+	private final static String ADMIN_SESSION = "adminSession";
+
+	private final static int maxInactivityTime = 1800;
+	private final static int userIdentify = 1;
+	private final static int adminIdentify = 0;
+
+	private final static Logger log = Logger.getLogger(ConnectionPool.class);
+
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String email = request.getParameter(EMAIL);
+		String password = request.getParameter(PASSWORD);
+		HttpSession session = request.getSession();
+
+		try {
+			User user = ServiceProvider.getInstance().getUserService().authorization(email, password);
+			if (user != null) {
+				session.setAttribute(USER, user);
+				session.setAttribute(USER_SESSION, userIdentify);
+				session.setMaxInactiveInterval(maxInactivityTime);
+				response.sendRedirect(PATH_TO_PERSONAL_ACCOUNT_COMMAND);
+			} else {
+				if (ServiceProvider.getInstance().getCommitteeService().authorization(email, password)) {
+					session.setAttribute(ADMIN_SESSION, adminIdentify);
+					session.setMaxInactiveInterval(maxInactivityTime);
+					response.sendRedirect(PATH_TO_ADMIN_PAGE_COMMAND);
+				} else {
+					response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
+				}
+			}
+
+		} catch (ServiceException e) {
+			log.error("Can't logging into account", e);
+		}
+	}
+
+}
