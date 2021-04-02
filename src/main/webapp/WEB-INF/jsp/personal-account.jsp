@@ -164,7 +164,7 @@
 					<div class="row">
 						<div class="col-12">
 							<button type="submit" name="passport" value="${user.passport}"
-								class="btn btn-primary btn-lg px-4" style="margin-left: 4%">
+								class="btn btn-primary btn-lg px-4" style="margin-left: 120%">
 								<fmt:message key="personal.delete" />
 							</button>
 						</div>

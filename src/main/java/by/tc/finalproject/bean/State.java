@@ -15,14 +15,14 @@ public class State implements Serializable {
 	private int certificateResult;
 	private int totalScope;
 
+	public State() {
+	}
+
 	public State(int firstSubjectResult, int secondSubjectResult, int thirdSubjectResult, int certificateResult) {
 		this.firstSubjectResult = firstSubjectResult;
 		this.secondSubjectResult = secondSubjectResult;
 		this.thirdSubjectResult = thirdSubjectResult;
 		this.certificateResult = certificateResult;
-	}
-
-	public State() {
 	}
 
 	public int getStudentId() {

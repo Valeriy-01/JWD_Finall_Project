@@ -12,12 +12,12 @@ public class PlanRequirements implements Serializable {
 	private int dialPlan;
 	private int passingScope;
 
+	public PlanRequirements() {
+	}
+
 	public PlanRequirements(int dialPlan, int passingScope) {
 		this.dialPlan = dialPlan;
 		this.passingScope = passingScope;
-	}
-
-	public PlanRequirements() {
 	}
 
 	public int getDialPlan() {

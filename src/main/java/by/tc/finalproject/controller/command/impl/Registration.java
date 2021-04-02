@@ -30,11 +30,13 @@ public class Registration implements Command {
 	private final static String FACULTY = "faculty";
 	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
 	private final static String REGISTER_ACCOUNT = "registerAccount";
+	private final static String ERROR = "error";
 
 	private final static Logger log = Logger.getLogger(ConnectionPool.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		UserAccess userAccess = new UserAccess(request.getParameter(EMAIL), request.getParameter(PASSWORD));
 		State state = new State(Integer.parseInt(request.getParameter(FIRST_SUBJECT)),
 				Integer.parseInt(request.getParameter(SECOND_SUBJECT)),
@@ -44,14 +46,15 @@ public class Registration implements Command {
 				userAccess, state);
 		user.setFacultyTitle(request.getParameter(FACULTY));
 		try {
-			HttpSession session = request.getSession();
 			if (ServiceProvider.getInstance().getUserService().registration(user)) {
 				session.setAttribute(REGISTER_ACCOUNT, 1);
-			}else {
+			} else {
 				session.setAttribute(REGISTER_ACCOUNT, 0);
 			}
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 		} catch (ServiceException e) {
+			session.setAttribute(ERROR, 1);
+			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			log.error("Can't create new user", e);
 		}
 	}

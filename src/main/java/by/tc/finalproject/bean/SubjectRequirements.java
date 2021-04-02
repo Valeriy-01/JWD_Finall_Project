@@ -13,13 +13,13 @@ public class SubjectRequirements implements Serializable {
 	private String secondSubject;
 	private String thirdSubject;
 
+	public SubjectRequirements() {
+	}
+
 	public SubjectRequirements(String firstSubject, String secondSubject, String thirdSubject) {
 		this.firstSubject = firstSubject;
 		this.secondSubject = secondSubject;
 		this.thirdSubject = thirdSubject;
-	}
-
-	public SubjectRequirements() {
 	}
 
 	public int getId() {

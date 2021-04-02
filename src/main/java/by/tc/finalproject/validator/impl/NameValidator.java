@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import by.tc.finalproject.validator.Validator;
 
 public class NameValidator implements Validator<String> {
-	private static final String NAME_REGEX_PATTERN = "^([А-Я][а-я]{1,75}|[A-Z][a-z]{1,75})$";
+	private static final String NAME_REGEX_PATTERN = "^([А-ЯЁ][а-яё]{1,75}|[A-Z][a-z]{1,75})$";
 
 	private static NameValidator instance;
 

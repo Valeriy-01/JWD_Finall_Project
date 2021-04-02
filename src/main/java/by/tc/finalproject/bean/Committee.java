@@ -13,13 +13,13 @@ public class Committee implements Serializable {
 	private String login;
 	private String password;
 
+	public Committee() {
+	}
+
 	public Committee(String email, String password, String login) {
 		this.email = email;
 		this.login = login;
 		this.password = password;
-	}
-
-	public Committee() {
 	}
 
 	public int getId() {

@@ -21,6 +21,7 @@ import by.tc.finalproject.service.exception.ServiceException;
 public class Editing implements Command {
 
 	private static final String PATH_TO_PERSON_PAGE = "/WEB-INF/jsp/personal-account.jsp";
+	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
 	private final static String USER = "user";
 	private final static String NAME = "name";
 	private final static String SURNAME = "surname";
@@ -34,11 +35,13 @@ public class Editing implements Command {
 	private final static String PASSPORT = "passport";
 	private final static String FACULTY = "facultyTitle";
 	private final static String EDIT_ACCOUNT = "editAccount";
+	private final static String ERROR = "error";
 
 	private final static Logger log = Logger.getLogger(ConnectionPool.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		UserAccess userAccess = new UserAccess(request.getParameter(EMAIL), request.getParameter(PASSWORD));
 		State state = new State(Integer.parseInt(request.getParameter(FIRST_SUBJECT)),
 				Integer.parseInt(request.getParameter(SECOND_SUBJECT)),
@@ -49,7 +52,6 @@ public class Editing implements Command {
 		user.setFacultyTitle(request.getParameter(FACULTY));
 
 		try {
-			HttpSession session = request.getSession();
 			if (ServiceProvider.getInstance().getUserService().editing(request.getParameter(OLD_PASSPORT), user)) {
 				session.setAttribute(USER, user);
 				session.setAttribute(EDIT_ACCOUNT, 1);
@@ -59,6 +61,8 @@ public class Editing implements Command {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH_TO_PERSON_PAGE);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException e) {
+			session.setAttribute(ERROR, 1);
+			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			log.error("Can't edit user data", e);
 		}
 	}

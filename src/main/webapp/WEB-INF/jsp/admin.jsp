@@ -44,7 +44,7 @@
 					<div class="row">
 						<div class="col-12">
 							<button type="submit" class="btn btn-primary btn-lg px-4"
-								style="margin-left: 3%">
+								style="margin-left: 120%">
 								<fmt:message key="admin.enrollee" />
 							</button>
 						</div>

@@ -12,12 +12,12 @@ public class UserAccess implements Serializable {
 	private String email;
 	private String password;
 
+	public UserAccess() {
+	}
+
 	public UserAccess(String email, String password) {
 		this.email = email;
 		this.password = password;
-	}
-
-	public UserAccess() {
 	}
 
 	public int getId() {

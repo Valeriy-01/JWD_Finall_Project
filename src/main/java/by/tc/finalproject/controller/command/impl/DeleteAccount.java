@@ -19,17 +19,20 @@ public class DeleteAccount implements Command {
 	private final static String PASSPORT = "passport";
 	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
 	private final static String DELETE_ACCOUNT = "deleteAccount";
+	private final static String ERROR = "error";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		try {
 			if (ServiceProvider.getInstance().getUserService().deleting(request.getParameter(PASSPORT))) {
-				HttpSession session = request.getSession();
 				session.setAttribute(DELETE_ACCOUNT, 1);
 				request.getSession().invalidate();
 				response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			}
 		} catch (ServiceException e) {
+			session.setAttribute(ERROR, 1);
+			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			log.error("Can't delete account", e);
 		}
 	}

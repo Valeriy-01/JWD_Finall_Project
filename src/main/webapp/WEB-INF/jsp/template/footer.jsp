@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="page" uri="/WEB-INF/tld/taglib.tld"%>
+
 <div class="footer">
 	<div class="container">
 		<div class="row">
@@ -40,7 +43,8 @@
 					<span><fmt:message key="footer.center" /></span>
 				</h3>
 				<ul class="list-unstyled">
-					<li><a href="Controller?command=gotocontactpage"><fmt:message key="footer.center" /></a></li>
+					<li><a href="Controller?command=gotocontactpage"><fmt:message
+								key="footer.center" /></a></li>
 				</ul>
 			</div>
 		</div>
@@ -51,15 +55,7 @@
 			</div>
 			<div class="col-12">
 				<div class="copyright">
-					<p>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						<fmt:message key="footer.copyright" />
-						&copy;
-						<script>document.write(new Date().getFullYear());</script>
-						<fmt:message key="footer.rights" />
-						</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</p>
+					<page:copyright  owner="Waleriy Goreglyad" year="2021"/>
 				</div>
 			</div>
 		</div>

@@ -70,7 +70,8 @@ public class CommitteeServiceImpl implements CommitteeService {
 		UserDAO userDAO = provider.getUserDAO();
 		boolean editing = false;
 		try {
-			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(passport)) {
+			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(passport)
+					&& !userDAO.isExistUser(user.getPassport())) {
 				userDAO.editUser(passport, user.getFacultyTitle(), user);
 				editing = userDAO.isExistUser(user.getPassport());
 			}
@@ -148,13 +149,13 @@ public class CommitteeServiceImpl implements CommitteeService {
 	}
 
 	private void formEnteredEnrolle(DAOProvider provider, User user) throws DAOException {
-		EmailServiceImpl.getInstance().sendMessage(user.getUserAccess().getEmail());
+		// EmailServiceImpl.getInstance().sendMessage(user.getUserAccess().getEmail());
 		provider.getAdmissionResultDAO().editAdmissionResult(user.getPassport(),
 				new AdmissionResult(ENTERED_CONDITION));
 	}
 
 	private void formNoEnteredEnrolle(DAOProvider provider, User user) throws DAOException {
-		EmailServiceImpl.getInstance().sendMessage(user.getUserAccess().getEmail());
+		// EmailServiceImpl.getInstance().sendMessage(user.getUserAccess().getEmail());
 		provider.getAdmissionResultDAO().editAdmissionResult(user.getPassport(),
 				new AdmissionResult(NO_ENTERED_CONDITION));
 	}

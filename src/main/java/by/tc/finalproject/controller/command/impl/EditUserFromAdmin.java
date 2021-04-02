@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -29,11 +30,14 @@ public class EditUserFromAdmin implements Command {
 	private final static String PASSPORT = "passport";
 	private final static String FACULTY = "facultyTitle";
 	private final static String GO_TO_LIST_OF_APPLICANTS_COMMAND = "Controller?command=gotolistofapplicants";
+	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
+	private final static String ERROR = "error";
 
 	private final static Logger log = Logger.getLogger(ConnectionPool.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		UserAccess userAccess = new UserAccess(request.getParameter(EMAIL), request.getParameter(PASSWORD));
 		State state = new State(Integer.parseInt(request.getParameter(FIRST_SUBJECT)),
 				Integer.parseInt(request.getParameter(SECOND_SUBJECT)),
@@ -46,6 +50,8 @@ public class EditUserFromAdmin implements Command {
 			ServiceProvider.getInstance().getCommitteeService().editingUser(request.getParameter(OLD_PASSPORT), user);
 			response.sendRedirect(GO_TO_LIST_OF_APPLICANTS_COMMAND);
 		} catch (ServiceException e) {
+			session.setAttribute(ERROR, 1);
+			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			log.error("Can't edit user data from admin", e);
 		}
 	}

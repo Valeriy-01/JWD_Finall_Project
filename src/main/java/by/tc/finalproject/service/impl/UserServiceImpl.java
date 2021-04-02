@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
 		UserDAO userDAO = provider.getUserDAO();
 		boolean registered = false;
 		try {
-			if (UserValidator.getInstance().validate(user) && !provider.getAdmissionResultDAO().isCreateEnrolleList()) {
+			if (UserValidator.getInstance().validate(user) && !provider.getAdmissionResultDAO().isCreateEnrolleList()
+					&& !userDAO.isExistUser(user.getPassport())) {
 				userDAO.addUser(user, user.getFacultyTitle());
 				registered = userDAO.isExistUser(user.getPassport());
 			}
@@ -55,7 +56,9 @@ public class UserServiceImpl implements UserService {
 		UserDAO userDAO = provider.getUserDAO();
 		boolean editing = false;
 		try {
-			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(oldPassport)  && !provider.getAdmissionResultDAO().isCreateEnrolleList() ) {
+			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(oldPassport)
+					&& !provider.getAdmissionResultDAO().isCreateEnrolleList()
+					&& !userDAO.isExistUser(user.getPassport())) {
 				userDAO.editUser(oldPassport, user.getFacultyTitle(), user);
 				editing = userDAO.isExistUser(user.getPassport());
 			}

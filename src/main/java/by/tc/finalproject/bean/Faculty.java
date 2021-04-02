@@ -13,13 +13,13 @@ public class Faculty implements Serializable {
 	private PlanRequirements planRequirements;
 	private SubjectRequirements subjectRequirements;
 
+	public Faculty() {
+	}
+
 	public Faculty(String title, PlanRequirements planRequirements, SubjectRequirements subjectRequirements) {
 		this.title = title;
 		this.planRequirements = planRequirements;
 		this.subjectRequirements = subjectRequirements;
-	}
-
-	public Faculty() {
 	}
 
 	public int getId() {

@@ -27,9 +27,9 @@
 
 	<div class="custom-breadcrumns border-bottom">
 		<div class="container">
-			<a href="Controller?command=gotomainpage"><fmt:message key="header.home" /></a> <span
-				class="mx-3 icon-keyboard_arrow_right"></span> <span class="current"><fmt:message
-					key="header.faculty" /></span>
+			<a href="Controller?command=gotomainpage"><fmt:message
+					key="header.home" /></a> <span class="mx-3 icon-keyboard_arrow_right"></span>
+			<span class="current"><fmt:message key="header.faculty" /></span>
 		</div>
 	</div>
 
@@ -39,8 +39,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotofksispage"><img src="images/course_1.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotofksispage"><img
+								src="images/course_1.jpg" alt="Image" class="img-fluid"></a>
 							<div class="category">
 								<h3>
 									<fmt:message key="home.networks" />
@@ -70,8 +70,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotofkppage"><img src="images/course_2.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotofkppage"><img
+								src="images/course_2.jpg" alt="Image" class="img-fluid"></a>
 
 							<div class="category">
 								<h3>
@@ -92,6 +92,7 @@
 							</div>
 
 							<p>
+
 								<a href="Controller?command=gotofkppage"
 									class="btn btn-primary rounded-0 px-4"><fmt:message
 										key="home.transition" /></a>
@@ -103,8 +104,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotofitupage"><img src="images/course_3.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotofitupage"><img
+								src="images/course_3.jpg" alt="Image" class="img-fluid"></a>
 
 							<div class="category">
 								<h3>
@@ -137,8 +138,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotofrpage"><img src="images/course_4.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotofrpage"><img
+								src="images/course_4.jpg" alt="Image" class="img-fluid"></a>
 
 							<div class="category">
 								<h3>
@@ -170,8 +171,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotoinfopage"><img src="images/course_5.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotoinfopage"><img
+								src="images/course_5.jpg" alt="Image" class="img-fluid"></a>
 
 							<div class="category">
 								<h3>
@@ -203,8 +204,8 @@
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="course-1-item">
 						<figure class="thumnail">
-							<a href="Controller?command=gotoefpage"><img src="images/course_6.jpg"
-								alt="Image" class="img-fluid"></a>
+							<a href="Controller?command=gotoefpage"><img
+								src="images/course_6.jpg" alt="Image" class="img-fluid"></a>
 
 							<div class="category">
 								<h3>

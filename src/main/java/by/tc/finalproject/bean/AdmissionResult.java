@@ -11,11 +11,11 @@ public class AdmissionResult implements Serializable {
 	private int studentId;
 	private int admissionResult;
 
-	public AdmissionResult(int admissonResult) {
-		this.admissionResult = admissonResult;
+	public AdmissionResult() {
 	}
 
-	public AdmissionResult() {
+	public AdmissionResult(int admissonResult) {
+		this.admissionResult = admissonResult;
 	}
 
 	public int getStudentId() {

@@ -18,15 +18,15 @@ public class User implements Serializable {
 	private State state;
 	private String facultyTitle;
 
+	public User() {
+	}
+
 	public User(String surname, String name, String passport, UserAccess userAccess, State state) {
 		this.name = name;
 		this.surname = surname;
 		this.passport = passport;
 		this.userAccess = userAccess;
 		this.state = state;
-	}
-
-	public User() {
 	}
 
 	public int getId() {

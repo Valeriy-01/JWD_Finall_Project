@@ -47,7 +47,7 @@
 								<label for="name"><b><fmt:message
 											key="register.name" /></b></label> <input type="text" id="name"
 									name="name" class="form-control form-control-lg" required
-									pattern="^([А-Я][а-я]{1,75}|[A-Z][a-z]{1,75})$"
+									pattern="^([А-ЯЁ][а-яё]{1,75}|[A-Z][a-z]{1,75})$"
 									title="<fmt:message
 											key="validator.name" />">
 							</div>
@@ -55,7 +55,7 @@
 								<label for="surname"><b><fmt:message
 											key="register.surname" /></b></label> <input type="text" id="surname"
 									name="surname" class="form-control form-control-lg" required
-									pattern="^([А-Я][а-я]{1,75}|[A-Z][a-z]{1,75})$"
+									pattern="^([А-ЯЁ][а-яё]{1,75}|[A-Z][a-z]{1,75})$"
 									title="<fmt:message
 											key="validator.surname" />">
 							</div>
