@@ -26,14 +26,16 @@ public class DeleteAccount implements Command {
 		HttpSession session = request.getSession();
 		try {
 			if (ServiceProvider.getInstance().getUserService().deleting(request.getParameter(PASSPORT))) {
-				session.setAttribute(DELETE_ACCOUNT, 1);
-				request.getSession().invalidate();
+				session.invalidate();
+				HttpSession deleteSession = request.getSession();
+				deleteSession.setAttribute(DELETE_ACCOUNT, 1);
 				response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 			}
 		} catch (ServiceException e) {
+			log.error("Can't delete account", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't delete account", e);
+
 		}
 	}
 

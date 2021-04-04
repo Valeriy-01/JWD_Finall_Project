@@ -34,29 +34,26 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			throw new DAOException("Error while writing user access to table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 
 	}
 
 	@Override
-	public void deleteUserAccess(int id) throws DAOException {
+	public void deleteUserAccess(Connection connection, int id) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_DELETE_USER_ACCESS);
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
-		} catch (SQLException | ConnectionPoolException e) {
+		} catch (SQLException e) {
 			throw new DAOException("Error deleting user access in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
-			connectionPool.releaseConnection(connection);
 		}
 
 	}
@@ -75,7 +72,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			throw new DAOException("Error find user access in table");
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -95,7 +92,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			throw new DAOException("Error editing user access in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -106,12 +103,13 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet=null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ACCESS_ID);
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, password);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt(1);
 			}
@@ -119,7 +117,10 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			throw new DAOException("Error get user access id from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -133,11 +134,12 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet=null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ACCESS);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+		    resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				userAccess.setId(id);
 				userAccess.setEmail(resultSet.getString(2));
@@ -147,7 +149,10 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			throw new DAOException("Error get user access from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

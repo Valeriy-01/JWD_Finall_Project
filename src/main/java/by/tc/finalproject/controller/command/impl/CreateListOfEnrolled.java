@@ -31,9 +31,10 @@ public class CreateListOfEnrolled implements Command {
 			session.setAttribute(CREATE_ADMISSION_RESULT, 1);
 			response.sendRedirect(GO_TO_ADMIN_PAGE_COMMAND);
 		} catch (ServiceException e) {
+			log.error("Can't create list of enrolle", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't create list of enrolle", e);
+
 		}
 	}
 }

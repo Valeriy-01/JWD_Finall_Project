@@ -33,7 +33,7 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			throw new DAOException("Error while writing plan requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -50,7 +50,7 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			throw new DAOException("Error deleting plan requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -71,7 +71,7 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			throw new DAOException("Error editing plan requirements from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -82,11 +82,12 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		PlanRequirements planRequirements = new PlanRequirements();
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_PLAN);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				planRequirements.setId(id);
 				planRequirements.setDialPlan(resultSet.getInt(2));
@@ -96,7 +97,10 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			throw new DAOException("Error get plan requirements from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

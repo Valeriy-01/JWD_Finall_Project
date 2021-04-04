@@ -19,7 +19,6 @@ import by.tc.finalproject.service.exception.ServiceException;
 public class GoToEditUserFromAdmin implements Command {
 	private static final String PATH_TO_EDIT_FROM_ADMIN_PAGE = "/WEB-INF/jsp/editUserFromAdmin.jsp";
 	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
-	private final static String OLD_PASSPORT = "oldPassport";
 	private final static String PASSPORT = "passport";
 	private final static String USER = "user";
 	private final static String ERROR = "error";
@@ -33,13 +32,12 @@ public class GoToEditUserFromAdmin implements Command {
 		try {
 			User user = ServiceProvider.getInstance().getCommitteeService().selectUser(request.getParameter(PASSPORT));
 			session.setAttribute(USER, user);
-			request.setAttribute(OLD_PASSPORT, request.getParameter(PASSPORT));
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH_TO_EDIT_FROM_ADMIN_PAGE);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException e) {
+			log.error("Cant't edit user data from admin", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Cant't edit user data from admin", e);
 		}
 	}
 }

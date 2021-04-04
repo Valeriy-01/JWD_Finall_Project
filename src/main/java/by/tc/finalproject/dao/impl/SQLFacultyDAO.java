@@ -36,6 +36,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 		try {
 			connection = connectionPool.getConnection();
 			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			preparedStatement = connection.prepareStatement(SQL_INSERT_FACULTY);
 			if (!isExistFaculty(faculty.getTitle(), connection)) {
 				preparedStatement.setString(1, faculty.getTitle());
@@ -57,7 +58,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error while writing faculty to table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			try {
 				connection.setAutoCommit(true);
@@ -80,7 +81,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error check faculty in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -92,25 +93,16 @@ public class SQLFacultyDAO implements FacultyDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connectionPool.getConnection();
-			connection.setAutoCommit(false);
-			preparedStatement = connection.prepareStatement(SQL_DELETE_FACULTY);
 			int facultyId = findFacultyId(facultyTitle);
+			connection = connectionPool.getConnection();
+			preparedStatement = connection.prepareStatement(SQL_DELETE_FACULTY);
 			preparedStatement.setInt(1, facultyId);
 			preparedStatement.executeUpdate();
-			DAOProvider.getInstance().getPlanRequirementsDAO().deletePlanRequirements(connection, facultyId);
-			DAOProvider.getInstance().getSubjectRequirementsDAO().deleteSubjectRequirements(connection, facultyId);
-			connection.commit();
 		} catch (SQLException | ConnectionPoolException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new DAOException("Error rollback faculty in table", e);
-			}
 			throw new DAOException("Error deleting faculty in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			try {
 				connection.setAutoCommit(true);
@@ -126,11 +118,12 @@ public class SQLFacultyDAO implements FacultyDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		int id = -1;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_MAX_FACULTY_ID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt(1);
 			}
@@ -139,7 +132,10 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error get Max ID in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -174,7 +170,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error editing faculty in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			try {
 				connection.setAutoCommit(true);
@@ -191,12 +187,13 @@ public class SQLFacultyDAO implements FacultyDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		int id = -1;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_FACULTY_ID);
 			preparedStatement.setString(1, facultyTitle);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt(1);
 			}
@@ -204,7 +201,10 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error of finding faculty in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -231,7 +231,10 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error get faculty title from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -246,11 +249,13 @@ public class SQLFacultyDAO implements FacultyDAO {
 		PreparedStatement preparedStatement = null;
 		DAOProvider provider = DAOProvider.getInstance();
 		Faculty faculty = new Faculty();
+		ResultSet resultSet = null;
+
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_FACULTY);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				faculty.setId(id);
 				faculty.setTitle(resultSet.getString(2));
@@ -263,7 +268,10 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error get faculty from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -276,10 +284,11 @@ public class SQLFacultyDAO implements FacultyDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ArrayList<Faculty> faculties = new ArrayList<>();
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_FACULTY);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				int id = resultSet.getInt(1);
 				Faculty faculty = getFaculty(id);
@@ -290,7 +299,10 @@ public class SQLFacultyDAO implements FacultyDAO {
 			throw new DAOException("Error get faculties from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

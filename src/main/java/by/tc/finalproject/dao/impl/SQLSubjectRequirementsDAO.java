@@ -35,7 +35,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			throw new DAOException("Error while writing subject requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 
@@ -53,7 +53,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			throw new DAOException("Error deleting subject requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			throw new DAOException("Error editing subject requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			throw new DAOException("Error get subject requirements from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}

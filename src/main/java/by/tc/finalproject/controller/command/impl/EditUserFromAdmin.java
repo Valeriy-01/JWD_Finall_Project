@@ -26,7 +26,6 @@ public class EditUserFromAdmin implements Command {
 	private final static String SECOND_SUBJECT = "secondSubjectResult";
 	private final static String THIRD_SUBJECT = "thirdSubjectResult";
 	private final static String CERTIFICATE = "certificateResult";
-	private final static String OLD_PASSPORT = "oldPassport";
 	private final static String PASSPORT = "passport";
 	private final static String FACULTY = "facultyTitle";
 	private final static String GO_TO_LIST_OF_APPLICANTS_COMMAND = "Controller?command=gotolistofapplicants";
@@ -47,12 +46,12 @@ public class EditUserFromAdmin implements Command {
 				userAccess, state);
 		user.setFacultyTitle(request.getParameter(FACULTY));
 		try {
-			ServiceProvider.getInstance().getCommitteeService().editingUser(request.getParameter(OLD_PASSPORT), user);
+			ServiceProvider.getInstance().getCommitteeService().editingUser(request.getParameter(PASSPORT), user);
 			response.sendRedirect(GO_TO_LIST_OF_APPLICANTS_COMMAND);
 		} catch (ServiceException e) {
+			log.error("Can't edit user data from admin", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't edit user data from admin", e);
 		}
 	}
 }

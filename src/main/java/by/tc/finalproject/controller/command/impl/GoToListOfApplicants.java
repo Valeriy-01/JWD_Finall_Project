@@ -35,9 +35,9 @@ public class GoToListOfApplicants implements Command {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH_TO_ENROLLEE_LIST_PAGE);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException e) {
+			log.error("Error while getting the list of users");
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Error while getting the list of users");
 		}
 	}
 }

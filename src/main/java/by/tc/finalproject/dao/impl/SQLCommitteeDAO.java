@@ -34,7 +34,7 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 				throw new DAOException("Error while writing committee to table", e);
 			} finally {
 				if (preparedStatement != null) {
-					connectionPool.closeConnection(preparedStatement);
+					connectionPool.closePreparedStatement(preparedStatement);
 				}
 				connectionPool.releaseConnection(connection);
 			}
@@ -56,7 +56,7 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 			throw new DAOException("Error deleting committee in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -78,7 +78,7 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 			throw new DAOException("Error check committee in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -101,7 +101,7 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 			throw new DAOException("Error editing committee in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}

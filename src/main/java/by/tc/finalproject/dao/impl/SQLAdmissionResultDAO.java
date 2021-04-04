@@ -31,7 +31,7 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 			throw new DAOException("Error add admission result in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 	}
@@ -49,7 +49,7 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 			throw new DAOException("Error deleting admission result in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 
@@ -71,7 +71,7 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 			throw new DAOException("Error editing admission result in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -83,12 +83,13 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_ADMISSION);
 			int id = DAOProvider.getInstance().getUserDAO().findUserId(passport);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				admissionResult.setStudentId(id);
 				admissionResult.setAdmissionResult(resultSet.getInt(2));
@@ -97,7 +98,10 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 			throw new DAOException("Error of finding user in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -110,12 +114,13 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_ADMISSION);
 			int id = DAOProvider.getInstance().getUserDAO().getNextMaxUserID() - 1;
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				if (resultSet.getInt(2) != -1) {
 					return true;
@@ -127,7 +132,10 @@ public class SQLAdmissionResultDAO implements AdmissionResultDAO {
 			throw new DAOException("Error of finding user in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

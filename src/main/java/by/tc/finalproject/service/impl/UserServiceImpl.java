@@ -57,8 +57,7 @@ public class UserServiceImpl implements UserService {
 		boolean editing = false;
 		try {
 			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(oldPassport)
-					&& !provider.getAdmissionResultDAO().isCreateEnrolleList()
-					&& !userDAO.isExistUser(user.getPassport())) {
+					&& !provider.getAdmissionResultDAO().isCreateEnrolleList()) {
 				userDAO.editUser(oldPassport, user.getFacultyTitle(), user);
 				editing = userDAO.isExistUser(user.getPassport());
 			}

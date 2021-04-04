@@ -34,29 +34,26 @@ public class SQLStateDAO implements StateDAO {
 			throw new DAOException("Error while writing statement in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 		}
 
 	}
 
 	@Override
-	public void deleteState(int id) throws DAOException {
+	public void deleteState(Connection connection, int id) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_DELETE_STATE);
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
-		} catch (SQLException | ConnectionPoolException e) {
+		} catch (SQLException e) {
 			throw new DAOException("Error deleting statement in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
-			connectionPool.releaseConnection(connection);
 		}
 
 	}
@@ -78,7 +75,8 @@ public class SQLStateDAO implements StateDAO {
 			throw new DAOException("Error editing statement in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+
 			}
 		}
 	}
@@ -89,11 +87,12 @@ public class SQLStateDAO implements StateDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_STATE);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				state.setStudentId(id);
 				state.setFirstSubjectResult(resultSet.getInt(2));
@@ -106,7 +105,10 @@ public class SQLStateDAO implements StateDAO {
 			throw new DAOException("Error get state from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

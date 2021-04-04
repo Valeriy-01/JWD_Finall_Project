@@ -70,8 +70,7 @@ public class CommitteeServiceImpl implements CommitteeService {
 		UserDAO userDAO = provider.getUserDAO();
 		boolean editing = false;
 		try {
-			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(passport)
-					&& !userDAO.isExistUser(user.getPassport())) {
+			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(passport)) {
 				userDAO.editUser(passport, user.getFacultyTitle(), user);
 				editing = userDAO.isExistUser(user.getPassport());
 			}

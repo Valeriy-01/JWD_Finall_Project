@@ -3,7 +3,6 @@
 <%@include file="./template/language.jsp"%>
 <%@include file="./template/library.jsp"%>
 <!DOCTYPE html>
-<c:set var="oldPaspport" value="${passport}" />
 
 <head>
 <title><fmt:message key="header.title" /></title>
@@ -143,7 +142,7 @@
 								<label for="passport"><b><fmt:message
 											key="register.passport" /></b></label> <input type="text" id="passport"
 									name="passport" class="form-control form-control-lg"
-									value="${user.passport}" required pattern="^[a-zA-Z0-9]+$"
+									value="${user.passport}" readonly
 									title="<fmt:message
 											key="validator.passport" />">
 							</div>
@@ -168,7 +167,7 @@
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<button type="submit" name="oldPassport" value="${oldPassport}"
+								<button type="submit" name="passport" value="${user.passport}"
 									class="btn btn-primary btn-lg px-5">
 									<fmt:message key="header.update" />
 								</button>

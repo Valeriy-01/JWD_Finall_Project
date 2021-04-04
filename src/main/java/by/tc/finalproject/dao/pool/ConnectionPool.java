@@ -3,10 +3,12 @@ package by.tc.finalproject.dao.pool;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.apache.log4j.Logger;
+
 import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 import by.tc.finalproject.dao.pool.manager.DBParameter;
 import by.tc.finalproject.dao.pool.manager.DBResourceManager;
@@ -104,25 +106,20 @@ public final class ConnectionPool {
 		}
 	}
 
-	public void closeConnection(Connection connection, PreparedStatement preparedStatement) {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			log.error("Can't destroy close connection ", e);
-		}
+	public void closePreparedStatement(PreparedStatement preparedStatement) {
 		try {
 			preparedStatement.close();
 		} catch (SQLException e) {
-			log.error("Can't destroy close statement ", e);
+			log.error("Can't close prepared statement ", e);
 		}
 
 	}
 
-	public void closeConnection(PreparedStatement preparedStatement) {
+	public void closeResultSet(ResultSet resultSet) {
 		try {
-			preparedStatement.close();
+			resultSet.close();
 		} catch (SQLException e) {
-			log.error("Can't destroy close statement ", e);
+			log.error("Can't close result set ", e);
 		}
 
 	}

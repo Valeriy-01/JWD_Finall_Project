@@ -54,9 +54,9 @@ public class Logination implements Command {
 				}
 			}
 		} catch (ServiceException e) {
+			log.error("Can't logging into account", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't logging into account", e);
 		}
 	}
 

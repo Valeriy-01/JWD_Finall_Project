@@ -31,7 +31,6 @@ public class Editing implements Command {
 	private final static String SECOND_SUBJECT = "secondSubjectResult";
 	private final static String THIRD_SUBJECT = "thirdSubjectResult";
 	private final static String CERTIFICATE = "certificateResult";
-	private final static String OLD_PASSPORT = "oldPassport";
 	private final static String PASSPORT = "passport";
 	private final static String FACULTY = "facultyTitle";
 	private final static String EDIT_ACCOUNT = "editAccount";
@@ -52,7 +51,7 @@ public class Editing implements Command {
 		user.setFacultyTitle(request.getParameter(FACULTY));
 
 		try {
-			if (ServiceProvider.getInstance().getUserService().editing(request.getParameter(OLD_PASSPORT), user)) {
+			if (ServiceProvider.getInstance().getUserService().editing(request.getParameter(PASSPORT), user)) {
 				session.setAttribute(USER, user);
 				session.setAttribute(EDIT_ACCOUNT, 1);
 			} else {
@@ -61,9 +60,9 @@ public class Editing implements Command {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH_TO_PERSON_PAGE);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException e) {
+			log.error("Can't edit user data", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't edit user data", e);
 		}
 	}
 

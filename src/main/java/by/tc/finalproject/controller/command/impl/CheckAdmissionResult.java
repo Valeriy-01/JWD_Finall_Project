@@ -33,9 +33,10 @@ public class CheckAdmissionResult implements Command {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH_TO_PERSON_PAGE);
 			requestDispatcher.forward(request, response);
 		} catch (ServiceException e) {
+			log.error("Can't check admission result", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't check admission result", e);
+
 		}
 	}
 }

@@ -40,13 +40,14 @@ public class SQLUserDAO implements UserDAO {
 			try {
 				connection = connectionPool.getConnection();
 				connection.setAutoCommit(false);
+				connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 				preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
 				preparedStatement.setInt(1, facultyId);
 				preparedStatement.setString(2, user.getSurname());
 				preparedStatement.setString(3, user.getName());
 				preparedStatement.setString(4, user.getPassport());
 				preparedStatement.execute();
-				int id = getNextMaxUserID();
+				int id = findUserId(user.getPassport());
 				user.getUserAccess().setId(id);
 				user.getState().setStudentId(id);
 				provider.getUserAccessDAO().addUserAccess(connection, user.getUserAccess());
@@ -63,7 +64,7 @@ public class SQLUserDAO implements UserDAO {
 				throw new DAOException("Error while writing user to table", e);
 			} finally {
 				if (preparedStatement != null) {
-					connectionPool.closeConnection(preparedStatement);
+					connectionPool.closePreparedStatement(preparedStatement);
 				}
 				try {
 					connection.setAutoCommit(true);
@@ -90,22 +91,23 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error check user in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			connectionPool.releaseConnection(connection);
 		}
 
 	}
-	
+
 	public int getNextMaxUserID() throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		int id = -1;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_MAX_USER_ID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt(1);
 			}
@@ -114,7 +116,10 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error get Max ID from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -129,22 +134,14 @@ public class SQLUserDAO implements UserDAO {
 		PreparedStatement preparedStatement = null;
 		try {
 			connection = connectionPool.getConnection();
-			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(SQL_DELETE_USER);
 			preparedStatement.setInt(1, userId);
 			preparedStatement.executeUpdate();
-			DAOProvider.getInstance().getAdmissionResultDAO().deleteAdmissionResult(connection, userId);
-			connection.commit();
 		} catch (SQLException | ConnectionPoolException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new DAOException("Error rollback deleting user", e);
-			}
 			throw new DAOException("Error deleting user in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			try {
 				connection.setAutoCommit(true);
@@ -163,11 +160,13 @@ public class SQLUserDAO implements UserDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
 			preparedStatement.setString(1, passport);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt(1);
 			}
@@ -175,7 +174,10 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error get user id from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -214,7 +216,7 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error editing user in table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
 			}
 			try {
 				connection.setAutoCommit(true);
@@ -233,11 +235,12 @@ public class SQLUserDAO implements UserDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER);
 			preparedStatement.setInt(1, id);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				user.setId(id);
 				user.setFacultyId(resultSet.getInt(2));
@@ -254,7 +257,10 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error get user from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -268,10 +274,11 @@ public class SQLUserDAO implements UserDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_USER);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				int id = resultSet.getInt(1);
 				User user = getUser(id);
@@ -283,7 +290,10 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error get users from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}
@@ -296,11 +306,13 @@ public class SQLUserDAO implements UserDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_USER_WITH_ID);
 			preparedStatement.setInt(1, facultyId);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				int id = resultSet.getInt(1);
 				User user = getUser(id);
@@ -312,7 +324,10 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException("Error get users with id from table", e);
 		} finally {
 			if (preparedStatement != null) {
-				connectionPool.closeConnection(preparedStatement);
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			if (resultSet != null) {
+				connectionPool.closeResultSet(resultSet);
 			}
 			connectionPool.releaseConnection(connection);
 		}

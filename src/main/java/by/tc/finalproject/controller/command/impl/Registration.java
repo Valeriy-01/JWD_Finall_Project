@@ -53,9 +53,9 @@ public class Registration implements Command {
 			}
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 		} catch (ServiceException e) {
+			log.error("Can't create new user", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't create new user", e);
 		}
 	}
 

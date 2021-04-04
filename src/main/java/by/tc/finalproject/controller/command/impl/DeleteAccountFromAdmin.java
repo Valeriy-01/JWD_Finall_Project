@@ -29,9 +29,10 @@ public class DeleteAccountFromAdmin implements Command {
 				response.sendRedirect(GO_TO_LIST_OF_APPLICANTS_COMMAND);
 			}
 		} catch (ServiceException e) {
+			log.error("Can't delete account from admin", e);
 			session.setAttribute(ERROR, 1);
 			response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
-			log.error("Can't delete account from admin", e);
+
 		}
 	}
 }

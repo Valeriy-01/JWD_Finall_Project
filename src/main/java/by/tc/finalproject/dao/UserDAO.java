@@ -15,13 +15,15 @@ public interface UserDAO {
 	int findUserId(String passport) throws DAOException;
 
 	void editUser(String passport, String userFaculty, User editUser) throws DAOException;
+		 
+	User getUser(int id) throws DAOException;
 	
 	int getNextMaxUserID() throws DAOException;
-	 
-	User getUser(int id) throws DAOException;
 
 	ArrayList<User> getUsers() throws DAOException;
 
 	ArrayList<User> getUsers(int facultyId) throws DAOException;
+	
+	
 
 }
