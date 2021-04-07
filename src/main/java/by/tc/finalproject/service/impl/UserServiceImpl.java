@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService {
 		boolean registered = false;
 		try {
 			if (UserValidator.getInstance().validate(user) && !provider.getAdmissionResultDAO().isCreateEnrolleList()
-					&& !userDAO.isExistUser(user.getPassport())) {
+					&& !userDAO.isExistUser(user.getPassport())
+					&& !provider.getUserAccessDAO().isExistUserByEmail(user.getUserAccess().getEmail())) {
 				userDAO.addUser(user, user.getFacultyTitle());
 				registered = userDAO.isExistUser(user.getPassport());
 			}

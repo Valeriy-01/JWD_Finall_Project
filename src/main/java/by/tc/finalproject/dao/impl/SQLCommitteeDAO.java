@@ -89,21 +89,23 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		try {
-			connection = connectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(SQL_UPDATE_COMMITTEE);
-			preparedStatement.setString(1, committee.getEmail());
-			preparedStatement.setString(2, committee.getPassword());
-			preparedStatement.setString(3, committee.getLogin());
-			preparedStatement.setString(4, login);
-			preparedStatement.executeUpdate();
-		} catch (SQLException | ConnectionPoolException e) {
-			throw new DAOException("Error editing committee in table", e);
-		} finally {
-			if (preparedStatement != null) {
-				connectionPool.closePreparedStatement(preparedStatement);
+		if (!isExistCommittee(committee.getEmail(), committee.getPassword())) {
+			try {
+				connection = connectionPool.getConnection();
+				preparedStatement = connection.prepareStatement(SQL_UPDATE_COMMITTEE);
+				preparedStatement.setString(1, committee.getEmail());
+				preparedStatement.setString(2, committee.getPassword());
+				preparedStatement.setString(3, committee.getLogin());
+				preparedStatement.setString(4, login);
+				preparedStatement.executeUpdate();
+			} catch (SQLException | ConnectionPoolException e) {
+				throw new DAOException("Error editing committee in table", e);
+			} finally {
+				if (preparedStatement != null) {
+					connectionPool.closePreparedStatement(preparedStatement);
+				}
+				connectionPool.releaseConnection(connection);
 			}
-			connectionPool.releaseConnection(connection);
 		}
 	}
 }

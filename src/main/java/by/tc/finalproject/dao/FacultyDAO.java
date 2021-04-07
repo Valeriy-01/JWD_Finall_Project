@@ -1,6 +1,5 @@
 package by.tc.finalproject.dao;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 
 import by.tc.finalproject.bean.Faculty;
@@ -13,7 +12,7 @@ public interface FacultyDAO {
 
 	void editFaculty(String facultyTitle, Faculty editFaculty) throws DAOException;
 
-	boolean isExistFaculty(String title, Connection connection) throws DAOException;
+	boolean isExistFaculty(String title) throws DAOException;
 
 	int findFacultyId(String facultyTitle) throws DAOException;
 

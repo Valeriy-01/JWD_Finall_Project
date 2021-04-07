@@ -33,51 +33,55 @@ public class SQLFacultyDAO implements FacultyDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		DAOProvider provider = DAOProvider.getInstance();
-		try {
-			connection = connectionPool.getConnection();
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-			preparedStatement = connection.prepareStatement(SQL_INSERT_FACULTY);
-			if (!isExistFaculty(faculty.getTitle(), connection)) {
-				preparedStatement.setString(1, faculty.getTitle());
-				preparedStatement.execute();
-				int facultyId = getNextMaxFacultyID();
-				faculty.getPlanRequirements().setId(facultyId);
-				faculty.getSubjectRequirements().setId(facultyId);
-				provider.getPlanRequirementsDAO().addPlanRequirements(connection, faculty.getPlanRequirements());
-				provider.getSubjectRequirementsDAO().addSubjectRequirements(connection,
-						faculty.getSubjectRequirements());
-				connection.commit();
-			}
-		} catch (SQLException | ConnectionPoolException e) {
+		if (!isExistFaculty(faculty.getTitle())) {
 			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new DAOException("Error while rollback add faculty", e);
-			}
-			throw new DAOException("Error while writing faculty to table", e);
-		} finally {
-			if (preparedStatement != null) {
-				connectionPool.closePreparedStatement(preparedStatement);
-			}
-			try {
-				connection.setAutoCommit(true);
-				connectionPool.releaseConnection(connection);
-			} catch (SQLException e) {
-				throw new DAOException("Error while commit new faculty in table", e);
+				connection = connectionPool.getConnection();
+				connection.setAutoCommit(false);
+				connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+				preparedStatement = connection.prepareStatement(SQL_INSERT_FACULTY);
+				if (!isExistFaculty(faculty.getTitle())) {
+					preparedStatement.setString(1, faculty.getTitle());
+					preparedStatement.executeUpdate();
+					int facultyId = findFacultyId(faculty.getTitle());
+					faculty.getPlanRequirements().setId(facultyId);
+					faculty.getSubjectRequirements().setId(facultyId);
+					provider.getPlanRequirementsDAO().addPlanRequirements(connection, faculty.getPlanRequirements());
+					provider.getSubjectRequirementsDAO().addSubjectRequirements(connection,
+							faculty.getSubjectRequirements());
+					connection.commit();
+				}
+			} catch (SQLException | ConnectionPoolException e) {
+				try {
+					connection.rollback();
+				} catch (SQLException e1) {
+					throw new DAOException("Error while rollback add faculty", e);
+				}
+				throw new DAOException("Error while writing faculty to table", e);
+			} finally {
+				if (preparedStatement != null) {
+					connectionPool.closePreparedStatement(preparedStatement);
+				}
+				try {
+					connection.setAutoCommit(true);
+					connectionPool.releaseConnection(connection);
+				} catch (SQLException e) {
+					throw new DAOException("Error while commit new faculty in table", e);
+				}
 			}
 		}
 	}
 
 	@Override
-	public boolean isExistFaculty(String title, Connection connection) throws DAOException {
+	public boolean isExistFaculty(String title) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
+		Connection connection = null;
 		try {
+			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_EXIST_FACULTY);
 			preparedStatement.setString(1, title);
 			return preparedStatement.executeQuery().next();
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException("Error check faculty in table", e);
 		} finally {
 			if (preparedStatement != null) {
@@ -122,6 +126,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 		int id = -1;
 		try {
 			connection = connectionPool.getConnection();
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			preparedStatement = connection.prepareStatement(SQL_SELECT_MAX_FACULTY_ID);
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -148,36 +153,38 @@ public class SQLFacultyDAO implements FacultyDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		try {
-			connection = connectionPool.getConnection();
-			connection.setAutoCommit(false);
-			preparedStatement = connection.prepareStatement(SQL_UPDATE_FACULTY);
-			int facultyId = findFacultyId(facultyTitle);
-			daoProvider.getSubjectRequirementsDAO().editSubjectRequirements(connection, facultyTitle,
-					editFaculty.getSubjectRequirements());
-			daoProvider.getPlanRequirementsDAO().editPlanRequirements(connection, facultyTitle,
-					editFaculty.getPlanRequirements());
-			preparedStatement.setString(1, editFaculty.getTitle());
-			preparedStatement.setInt(2, facultyId);
-			preparedStatement.executeUpdate();
-			connection.commit();
-		} catch (SQLException | ConnectionPoolException e) {
+		if (!isExistFaculty(editFaculty.getTitle())) {
 			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new DAOException("Error rolback editing faculty", e);
-			}
-			throw new DAOException("Error editing faculty in table", e);
-		} finally {
-			if (preparedStatement != null) {
-				connectionPool.closePreparedStatement(preparedStatement);
-			}
-			try {
-				connection.setAutoCommit(true);
-				connectionPool.releaseConnection(connection);
+				connection = connectionPool.getConnection();
+				connection.setAutoCommit(false);
+				preparedStatement = connection.prepareStatement(SQL_UPDATE_FACULTY);
+				int facultyId = findFacultyId(facultyTitle);
+				daoProvider.getSubjectRequirementsDAO().editSubjectRequirements(connection, facultyTitle,
+						editFaculty.getSubjectRequirements());
+				daoProvider.getPlanRequirementsDAO().editPlanRequirements(connection, facultyTitle,
+						editFaculty.getPlanRequirements());
+				preparedStatement.setString(1, editFaculty.getTitle());
+				preparedStatement.setInt(2, facultyId);
+				preparedStatement.executeUpdate();
+				connection.commit();
+			} catch (SQLException | ConnectionPoolException e) {
+				try {
+					connection.rollback();
+				} catch (SQLException e1) {
+					throw new DAOException("Error rolback editing faculty", e);
+				}
+				throw new DAOException("Error editing faculty in table", e);
+			} finally {
+				if (preparedStatement != null) {
+					connectionPool.closePreparedStatement(preparedStatement);
+				}
+				try {
+					connection.setAutoCommit(true);
+					connectionPool.releaseConnection(connection);
 
-			} catch (SQLException e) {
-				throw new DAOException("Error commit editing faculty", e);
+				} catch (SQLException e) {
+					throw new DAOException("Error commit editing faculty", e);
+				}
 			}
 		}
 	}
@@ -191,6 +198,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 		int id = -1;
 		try {
 			connection = connectionPool.getConnection();
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			preparedStatement = connection.prepareStatement(SQL_SELECT_FACULTY_ID);
 			preparedStatement.setString(1, facultyTitle);
 			resultSet = preparedStatement.executeQuery();

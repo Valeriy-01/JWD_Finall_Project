@@ -17,6 +17,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 	private static final String SQL_UPDATE_USER_ACCESS = "UPDATE committee.user_access SET email=?,password=? WHERE id=?";
 	private static final String SQL_DELETE_USER_ACCESS = "DELETE FROM committee.user_access WHERE id=?";
 	private static final String SQL_EXIST_LOGIN_USER_ACCESS = "SELECT * FROM committee.user_access WHERE email=? and password=?";
+	private static final String SQL_EXIST_USER_BY_EMAIL = "SELECT * FROM committee.user_access WHERE email=?";
 	private static final String SQL_SELECT_USER_ACCESS_ID = "SELECT id FROM committee.user_access WHERE email=? and password=?";
 	private static final String SQL_SELECT_USER_ACCESS = "SELECT * FROM committee.user_access WHERE id=?";
 
@@ -79,6 +80,27 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 	}
 
 	@Override
+	public boolean isExistUserByEmail(String email) throws DAOException {
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			connection = connectionPool.getConnection();
+			preparedStatement = connection.prepareStatement(SQL_EXIST_USER_BY_EMAIL);
+			preparedStatement.setString(1, email);
+			return preparedStatement.executeQuery().next();
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DAOException("Error check user in table", e);
+		} finally {
+			if (preparedStatement != null) {
+				connectionPool.closePreparedStatement(preparedStatement);
+			}
+			connectionPool.releaseConnection(connection);
+		}
+
+	}
+
+	@Override
 	public void editUserAccess(Connection connection, int userId, UserAccess editUserAccess) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
@@ -103,7 +125,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet=null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ACCESS_ID);
@@ -134,12 +156,12 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet=null;
+		ResultSet resultSet = null;
 		try {
 			connection = connectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ACCESS);
 			preparedStatement.setInt(1, id);
-		    resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				userAccess.setId(id);
 				userAccess.setEmail(resultSet.getString(2));

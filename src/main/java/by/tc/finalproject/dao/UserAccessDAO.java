@@ -14,6 +14,8 @@ public interface UserAccessDAO {
 
 	boolean isExistLoginUserAccess(String email, String password) throws DAOException;
 
+	boolean isExistUserByEmail(String email) throws DAOException;
+	
 	int findUserAccessId(String email, String password) throws DAOException;
 
 	UserAccess getUserAccess(int id) throws DAOException;
