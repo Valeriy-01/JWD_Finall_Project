@@ -18,6 +18,9 @@ public class PassportValidator implements Validator<String> {
 
 	@Override
 	public Boolean validate(final String input) {
+		if (input == null) {
+			return false;
+		}
 		Predicate<String> stringPredicate = str -> (StringLengthValidator.getInstance().validate(str)
 				& str.matches(LOGIN_REGEX_PATTERN));
 		return stringPredicate.test(input);

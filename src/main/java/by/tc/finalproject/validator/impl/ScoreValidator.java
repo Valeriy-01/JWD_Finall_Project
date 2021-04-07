@@ -21,6 +21,9 @@ public class ScoreValidator implements Validator<Integer> {
 
 	@Override
 	public Boolean validate(final Integer input) {
+		if (input == null) {
+			return false;
+		}
 		Predicate<Integer> integerPredicate = integer -> integer > min && integer < max;
 		return integerPredicate.test(input);
 	}

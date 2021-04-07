@@ -37,18 +37,6 @@ public class CommitteeServiceImpl implements CommitteeService {
 	}
 
 	@Override
-	public ArrayList<User> viewApplicants() throws ServiceException {
-		DAOProvider provider = DAOProvider.getInstance();
-		UserDAO userDAO = provider.getUserDAO();
-		try {
-			ArrayList<User> users = userDAO.getUsers();
-			return users;
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-
-	@Override
 	public boolean deletingUser(String passport) throws ServiceException {
 		DAOProvider provider = DAOProvider.getInstance();
 		UserDAO userDAO = provider.getUserDAO();
@@ -78,6 +66,18 @@ public class CommitteeServiceImpl implements CommitteeService {
 			throw new ServiceException(e);
 		}
 		return editing;
+	}
+
+	@Override
+	public ArrayList<User> viewApplicants() throws ServiceException {
+		DAOProvider provider = DAOProvider.getInstance();
+		UserDAO userDAO = provider.getUserDAO();
+		try {
+			ArrayList<User> users = userDAO.getUsers();
+			return users;
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
 	}
 
 	@Override

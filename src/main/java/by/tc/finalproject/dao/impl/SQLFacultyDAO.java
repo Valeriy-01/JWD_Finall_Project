@@ -25,14 +25,12 @@ public class SQLFacultyDAO implements FacultyDAO {
 	private static final String SQL_SELECT_FACULTY_TITLE = "SELECT title FROM committee.faculty WHERE id=?";
 	private static final String SQL_SELECT_FACULTY = "SELECT * FROM committee.faculty WHERE id=?";
 	private static final String SQL_SELECT_ALL_FACULTY = "SELECT * FROM committee.faculty";
-	private static final String SQL_SELECT_MAX_FACULTY_ID = "SELECT MAX(id) FROM committee.faculty";
 
 	@Override
 	public void addFaculty(Faculty faculty) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		DAOProvider provider = DAOProvider.getInstance();
 		if (!isExistFaculty(faculty.getTitle())) {
 			try {
 				connection = connectionPool.getConnection();
@@ -42,12 +40,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 				if (!isExistFaculty(faculty.getTitle())) {
 					preparedStatement.setString(1, faculty.getTitle());
 					preparedStatement.executeUpdate();
-					int facultyId = findFacultyId(faculty.getTitle());
-					faculty.getPlanRequirements().setId(facultyId);
-					faculty.getSubjectRequirements().setId(facultyId);
-					provider.getPlanRequirementsDAO().addPlanRequirements(connection, faculty.getPlanRequirements());
-					provider.getSubjectRequirementsDAO().addSubjectRequirements(connection,
-							faculty.getSubjectRequirements());
+					addAllData(faculty, connection);
 					connection.commit();
 				}
 			} catch (SQLException | ConnectionPoolException e) {
@@ -69,6 +62,15 @@ public class SQLFacultyDAO implements FacultyDAO {
 				}
 			}
 		}
+	}
+
+	private void addAllData(Faculty faculty, Connection connection) throws DAOException {
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		int facultyId = findFacultyId(faculty.getTitle());
+		faculty.getPlanRequirements().setId(facultyId);
+		faculty.getSubjectRequirements().setId(facultyId);
+		daoProvider.getPlanRequirementsDAO().addPlanRequirements(connection, faculty.getPlanRequirements());
+		daoProvider.getSubjectRequirementsDAO().addSubjectRequirements(connection, faculty.getSubjectRequirements());
 	}
 
 	@Override
@@ -118,51 +120,18 @@ public class SQLFacultyDAO implements FacultyDAO {
 
 	}
 
-	private int getNextMaxFacultyID() throws DAOException {
-		ConnectionPool connectionPool = ConnectionPool.getInstance();
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		int id = -1;
-		try {
-			connection = connectionPool.getConnection();
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-			preparedStatement = connection.prepareStatement(SQL_SELECT_MAX_FACULTY_ID);
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				id = resultSet.getInt(1);
-			}
-			return ++id;
-		} catch (SQLException | ConnectionPoolException e) {
-			throw new DAOException("Error get Max ID in table", e);
-		} finally {
-			if (preparedStatement != null) {
-				connectionPool.closePreparedStatement(preparedStatement);
-			}
-			if (resultSet != null) {
-				connectionPool.closeResultSet(resultSet);
-			}
-			connectionPool.releaseConnection(connection);
-		}
-
-	}
-
 	@Override
 	public void editFaculty(String facultyTitle, Faculty editFaculty) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		DAOProvider daoProvider = DAOProvider.getInstance();
+		int facultyId = findFacultyId(facultyTitle);
 		if (!isExistFaculty(editFaculty.getTitle())) {
 			try {
 				connection = connectionPool.getConnection();
 				connection.setAutoCommit(false);
 				preparedStatement = connection.prepareStatement(SQL_UPDATE_FACULTY);
-				int facultyId = findFacultyId(facultyTitle);
-				daoProvider.getSubjectRequirementsDAO().editSubjectRequirements(connection, facultyTitle,
-						editFaculty.getSubjectRequirements());
-				daoProvider.getPlanRequirementsDAO().editPlanRequirements(connection, facultyTitle,
-						editFaculty.getPlanRequirements());
+				editAllData(editFaculty, facultyTitle, connection);
 				preparedStatement.setString(1, editFaculty.getTitle());
 				preparedStatement.setInt(2, facultyId);
 				preparedStatement.executeUpdate();
@@ -187,6 +156,14 @@ public class SQLFacultyDAO implements FacultyDAO {
 				}
 			}
 		}
+	}
+
+	private void editAllData(Faculty editFaculty, String facultyTitle, Connection connection) throws DAOException {
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		daoProvider.getSubjectRequirementsDAO().editSubjectRequirements(connection, facultyTitle,
+				editFaculty.getSubjectRequirements());
+		daoProvider.getPlanRequirementsDAO().editPlanRequirements(connection, facultyTitle,
+				editFaculty.getPlanRequirements());
 	}
 
 	@Override

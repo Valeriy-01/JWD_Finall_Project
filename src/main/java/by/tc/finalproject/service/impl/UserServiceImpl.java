@@ -52,14 +52,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean editing(String oldPassport, User user) throws ServiceException {
+	public boolean editing(String passport, User user) throws ServiceException {
 		DAOProvider provider = DAOProvider.getInstance();
 		UserDAO userDAO = provider.getUserDAO();
 		boolean editing = false;
 		try {
-			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(oldPassport)
+			if (UserValidator.getInstance().validate(user) && PassportValidator.getInstance().validate(passport)
 					&& !provider.getAdmissionResultDAO().isCreateEnrolleList()) {
-				userDAO.editUser(oldPassport, user.getFacultyTitle(), user);
+				userDAO.editUser(passport, user.getFacultyTitle(), user);
 				editing = userDAO.isExistUser(user.getPassport());
 			}
 		} catch (DAOException e) {

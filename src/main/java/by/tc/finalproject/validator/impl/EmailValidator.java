@@ -20,6 +20,9 @@ public class EmailValidator implements Validator<String> {
 
 	@Override
 	public Boolean validate(final String input) {
+		if (input == null) {
+			return false;
+		}
 		Predicate<String> stringPredicate = str -> (StringLengthValidator.getInstance().validate(str)
 				& str.matches(EMAIL_REGEX_PATTERN));
 		return stringPredicate.test(input);

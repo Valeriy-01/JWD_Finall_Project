@@ -20,6 +20,9 @@ public class StringLengthValidator implements Validator<String> {
 
 	@Override
 	public Boolean validate(final String input) {
+		if (input == null) {
+			return false;
+		}
 		Predicate<String> stringPredicate = str -> (!str.isEmpty() & str.length() < maxLength
 				& str.length() > minxLength);
 		return stringPredicate.test(input);

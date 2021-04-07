@@ -18,7 +18,7 @@ public class PasswordValidatorTest {
 	
 	@Test
     public void testValidateX2() {
-        String input = "1234";
+        String input = null;
         Assert.assertFalse(PasswordValidator.getInstance().validate(input));
     }
 	

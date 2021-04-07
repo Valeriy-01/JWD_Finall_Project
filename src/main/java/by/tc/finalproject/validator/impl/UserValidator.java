@@ -17,6 +17,9 @@ public class UserValidator implements Validator<User> {
 
 	@Override
 	public Boolean validate(final User user) {
+		if (user == null) {
+			return false;
+		}
 		return PassportValidator.getInstance().validate(user.getPassport())
 				&& PasswordValidator.getInstance().validate(user.getUserAccess().getPassword())
 				&& NameValidator.getInstance().validate(user.getName())

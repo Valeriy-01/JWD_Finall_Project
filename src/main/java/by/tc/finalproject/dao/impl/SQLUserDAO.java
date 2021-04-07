@@ -31,8 +31,7 @@ public class SQLUserDAO implements UserDAO {
 
 	@Override
 	public void addUser(User user, String facultyTitle) throws DAOException {
-		DAOProvider provider = DAOProvider.getInstance();
-		int facultyId = provider.getFacultyDAO().findFacultyId(facultyTitle);
+		int facultyId = DAOProvider.getInstance().getFacultyDAO().findFacultyId(facultyTitle);
 		if (!isExistUser(user.getPassport())) {
 			ConnectionPool connectionPool = ConnectionPool.getInstance();
 			Connection connection = null;
@@ -47,13 +46,7 @@ public class SQLUserDAO implements UserDAO {
 				preparedStatement.setString(3, user.getName());
 				preparedStatement.setString(4, user.getPassport());
 				preparedStatement.execute();
-				int id = findUserId(user.getPassport());
-				user.getUserAccess().setId(id);
-				user.getState().setStudentId(id);
-				provider.getUserAccessDAO().addUserAccess(connection, user.getUserAccess());
-				provider.getAdmissionResultDAO().addAdmissionResult(connection, id,
-						new AdmissionResult(UNKNOWN_CONDITION));
-				provider.getStateDAO().addUserInState(connection, user.getState());
+				addAllData(user, connection);
 				connection.commit();
 			} catch (SQLException | ConnectionPoolException e) {
 				try {
@@ -75,6 +68,16 @@ public class SQLUserDAO implements UserDAO {
 			}
 
 		}
+	}
+
+	private void addAllData(User user, Connection connection) throws DAOException {
+		DAOProvider provider = DAOProvider.getInstance();
+		int id = findUserId(user.getPassport());
+		user.getUserAccess().setId(id);
+		user.getState().setStudentId(id);
+		provider.getUserAccessDAO().addUserAccess(connection, user.getUserAccess());
+		provider.getAdmissionResultDAO().addAdmissionResult(connection, id, new AdmissionResult(UNKNOWN_CONDITION));
+		provider.getStateDAO().addUserInState(connection, user.getState());
 	}
 
 	@Override
@@ -188,8 +191,8 @@ public class SQLUserDAO implements UserDAO {
 	@Override
 	public void editUser(String passport, String userFaculty, User editUser) throws DAOException {
 		DAOProvider provider = DAOProvider.getInstance();
-		int userId = findUserId(passport);
 		int facultyId = provider.getFacultyDAO().findFacultyId(userFaculty);
+		int userId = findUserId(editUser.getPassport());
 		editUser.setFacultyId(facultyId);
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
@@ -204,8 +207,7 @@ public class SQLUserDAO implements UserDAO {
 			preparedStatement.setString(4, editUser.getPassport());
 			preparedStatement.setInt(5, userId);
 			preparedStatement.execute();
-			provider.getStateDAO().editStatement(connection, userId, editUser.getState());
-			provider.getUserAccessDAO().editUserAccess(connection, userId, editUser.getUserAccess());
+			editAllData(editUser, connection, userId);
 			connection.commit();
 		} catch (SQLException | ConnectionPoolException e) {
 			try {
@@ -226,6 +228,12 @@ public class SQLUserDAO implements UserDAO {
 			}
 		}
 
+	}
+
+	private void editAllData(User editUser, Connection connection, int userId) throws DAOException {
+		DAOProvider provider = DAOProvider.getInstance();
+		provider.getStateDAO().editStatement(connection, userId, editUser.getState());
+		provider.getUserAccessDAO().editUserAccess(connection, userId, editUser.getUserAccess());
 	}
 
 	@Override

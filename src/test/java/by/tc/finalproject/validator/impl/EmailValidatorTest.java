@@ -12,7 +12,7 @@ public class EmailValidatorTest {
 	
 	@Test
     public void testValidateX1() {
-        String input = "goreglyad_mail.ru";
+        String input = null;
         Assert.assertFalse(EmailValidator.getInstance().validate(input));
     }
 }

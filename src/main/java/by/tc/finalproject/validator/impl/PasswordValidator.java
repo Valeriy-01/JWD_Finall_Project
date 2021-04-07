@@ -19,6 +19,9 @@ public class PasswordValidator implements Validator<String> {
 
 	@Override
 	public Boolean validate(final String input) {
+		if (input == null) {
+			return false;
+		}
 		Predicate<String> stringPredicate = str -> (str.length() > min && str.length() < max);
 		return stringPredicate.test(input);
 	}

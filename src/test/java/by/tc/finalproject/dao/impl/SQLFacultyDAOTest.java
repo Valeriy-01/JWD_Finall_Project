@@ -17,112 +17,91 @@ import by.tc.finalproject.dao.pool.ConnectionPool;
 import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLFacultyDAOTest {
+
+	/*
+	 * Начальные условия : база данных не содержит заданный факультет
+	 */
+
 	@Test
-	public void testInsertFacultyX0001() {
-		try {
-			PlanRequirements planRequirements = new PlanRequirements(2, 0);
-			SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
-			Faculty faculty = new Faculty("Факультет Компьютерных Систем И Сетей", planRequirements,
-					subjectRequirements);
+	public void testInsertFacultyX0001() throws DAOException, ConnectionPoolException, SQLException {
+		PlanRequirements planRequirements = new PlanRequirements(2, 0);
+		SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
+		Faculty faculty = new Faculty("Факультет Компьютерных Систем И Сетей", planRequirements, subjectRequirements);
 
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			daoProvider.getFacultyDAO().addFaculty(faculty);
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		daoProvider.getFacultyDAO().addFaculty(faculty);
 
-			Connection connection = ConnectionPool.getInstance().getConnection();
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
-			preparedStatement.setString(1, "Факультет Компьютерных Систем И Сетей");
-			ResultSet resultSet = preparedStatement.executeQuery();
+		Connection connection = ConnectionPool.getInstance().getConnection();
+		PreparedStatement preparedStatement = connection
+				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+		preparedStatement.setString(1, "Факультет Компьютерных Систем И Сетей");
+		ResultSet resultSet = preparedStatement.executeQuery();
 
-			Assert.assertTrue(resultSet.next());
-		} catch (SQLException | ConnectionPoolException | DAOException e) {
-			e.printStackTrace();
-		}
+		Assert.assertTrue(resultSet.next());
+
 	}
 
-	@Test
-	public void testIsExistFacultyX0001() {
-		try {
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Компьютерных Систем И Сетей");
-			Assert.assertTrue(result);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testEditFacultyX0001() {
-		try {
-			PlanRequirements planRequirements = new PlanRequirements(2, 0);
-			SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
-			Faculty editFaculty = new Faculty("Факультет Компьютерного Проектирования", planRequirements,
-					subjectRequirements);
+	/*
+	 * Начальные условия : база данных содержит заданный факультет
+	 */
 
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			daoProvider.getFacultyDAO().editFaculty("Факультет Компьютерных Систем И Сетей",editFaculty);
-
-			Connection connection = ConnectionPool.getInstance().getConnection();
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
-			preparedStatement.setString(1, "Факультет Компьютерного Проектирования");
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			Assert.assertTrue(resultSet.next());
-		} catch (SQLException | ConnectionPoolException | DAOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	@Test
-	public void testIsExistFacultyX0002() {
-		try {
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Компьютерных Систем И Сетей");
-			Assert.assertFalse(result);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+	public void testIsExistFacultyX0001() throws DAOException {
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Сетей");
+		Assert.assertTrue(result);
 	}
-	
-	@Test
-	public void testIsExistFacultyX0003() {
-		try {
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Компьютерного Проектирования");
-			Assert.assertTrue(result);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testDeleteFacultyX0003() {
-		try {
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			daoProvider.getFacultyDAO().deleteFaculty("Факультет Компьютерного Проектирования");
 
-			Connection connection = ConnectionPool.getInstance().getConnection();
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
-			preparedStatement.setString(1, "Факультет Компьютерного Проектирования");
-			ResultSet resultSet = preparedStatement.executeQuery();
+	/*
+	 * Начальные условия : база данных содержит заданный факультет
+	 */
 
-			Assert.assertFalse(resultSet.next());
-		} catch (SQLException | ConnectionPoolException | DAOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	@Test
-	public void testIsExistFacultyX0004() {
-		try {
-			DAOProvider daoProvider = DAOProvider.getInstance();
-			boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Компьютерного Проектирования");
-			Assert.assertFalse(result);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+	public void testEditFacultyX0001() throws DAOException, SQLException, ConnectionPoolException {
+
+		PlanRequirements planRequirements = new PlanRequirements(2, 0);
+		SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
+		Faculty editFaculty = new Faculty("Факультет Проектирования", planRequirements, subjectRequirements);
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		daoProvider.getFacultyDAO().editFaculty("Факультет Для редактирования", editFaculty);
+		Connection connection = ConnectionPool.getInstance().getConnection();
+		PreparedStatement preparedStatement = connection
+				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+		preparedStatement.setString(1, "Факультет Проектирования");
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		Assert.assertTrue(resultSet.next());
+
+	}
+
+	/*
+	 * Начальные условия : база данных не содержит заданный факультет
+	 */
+
+	@Test
+	public void testIsExistFacultyX0002() throws DAOException {
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Систем");
+		Assert.assertFalse(result);
+	}
+
+	/*
+	 * Начальные условия : база данных содержит заданный факультет и факультет не
+	 * имеет абитуриентов
+	 */
+
+	@Test
+	public void testDeleteFacultyX0001() throws DAOException, ConnectionPoolException, SQLException {
+		DAOProvider daoProvider = DAOProvider.getInstance();
+		daoProvider.getFacultyDAO().deleteFaculty("Факультет Для удаления");
+
+		Connection connection = ConnectionPool.getInstance().getConnection();
+		PreparedStatement preparedStatement = connection
+				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+		preparedStatement.setString(1, "Факультет Для удаления");
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		Assert.assertFalse(resultSet.next());
 	}
 
 }
