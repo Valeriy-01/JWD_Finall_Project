@@ -23,6 +23,7 @@ public class Logination implements Command {
 	private final static String GO_TO_MAIN_PAGE_COMMAND = "Controller?command=gotomainpage";
 	private final static String PATH_TO_PERSONAL_ACCOUNT_COMMAND = "Controller?command=gotopersonpage";
 	private final static String ERROR = "error";
+	private final static String LOGIN = "login";
 
 	private final static String USER_SESSION = "userSession";
 	private final static String ADMIN_SESSION = "adminSession";
@@ -50,6 +51,7 @@ public class Logination implements Command {
 					session.setAttribute(ADMIN_SESSION, adminIdentify);
 					response.sendRedirect(PATH_TO_ADMIN_PAGE_COMMAND);
 				} else {
+					session.setAttribute(LOGIN, 1);
 					response.sendRedirect(GO_TO_MAIN_PAGE_COMMAND);
 				}
 			}

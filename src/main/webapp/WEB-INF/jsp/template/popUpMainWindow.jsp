@@ -32,6 +32,20 @@
 	</div>
 </c:if>
 
+<c:if test="${login == 1}">
+	<c:remove var="error" scope="session" />
+	<div id="overlay">
+		<div class="popup">
+			<h2>
+				<fmt:message key="message.login" />
+			</h2>
+
+			<button class="close" title="Закрыть"
+				onclick="document.getElementById('overlay').style.display='none';"></button>
+		</div>
+	</div>
+</c:if>
+
 <c:if test="${registerAccount == 1}">
 	<c:remove var="registerAccount" scope="session" />
 	<div id="overlay">
