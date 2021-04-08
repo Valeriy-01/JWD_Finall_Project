@@ -17,21 +17,19 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testAuthorizationX0001() throws ServiceException {
-		String email = "goreglyad_01@mail.ru";
-		String password = "wergj223vwe";
-
-		UserAccess userAccess = new UserAccess("goreglyad_01@mail.ru", "hfkgun48nvv");
-		State state = new State(85, 97, 85, 98);
-		User user = new User("Горегляд", "Валерий", "ab452716", userAccess, state);
+		String email = "test@mail.ru";
+		String password = "testtesttest";
+		
+		String name="TEST";
 
 		User resultUser = ServiceProvider.getInstance().getUserService().authorization(email, password);
 
-		Assert.assertTrue(resultUser.equals(user));
+		Assert.assertTrue(resultUser.getName().equals(name));
 	}
 
 	@Test
 	public void testAuthorizationX0002() throws ServiceException {
-		String email = "committee_01@mail.ru";
+		String email = "user@mail.ru";
 		String password = "";
 		User resultUser = ServiceProvider.getInstance().getUserService().authorization(email, password);
 
@@ -45,10 +43,10 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testRegistrationX0001() throws ServiceException {
-		UserAccess userAccess = new UserAccess("goreglyad_01@mail.ru", "hfkgun48nvv");
+		UserAccess userAccess = new UserAccess("gor1@mail.ru", "11111111111111111111");
 		State state = new State(85, 97, 85, 98);
-		User user = new User("Горегляд", "Валерий", "ab452716", userAccess, state);
-		user.setFacultyTitle("Факультет Компьютерного Проектирования");
+		User user = new User("Горегляд", "Валерий", "ab11111111", userAccess, state);
+		user.setFacultyTitle("Существует ли");
 
 		boolean result = ServiceProvider.getInstance().getUserService().registration(user);
 		Assert.assertTrue(result);
@@ -73,8 +71,7 @@ public class UserServiceImplTest {
 		UserAccess userAccess = new UserAccess("goreglyad_01@mail.ru", "hfkgun48nvv");
 		State state = new State(85, 97, 85, 98);
 		User user = new User("Горегляд", "Валерий", "ab452716", userAccess, state);
-		user.setFacultyTitle("Факультет Компьютерного Проектирования");
-
+		user.setFacultyTitle("Существует ли");
 		boolean result = ServiceProvider.getInstance().getUserService().editing(user.getPassport(), user);
 		Assert.assertTrue(result);
 	}
@@ -95,7 +92,7 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testDeletingX0001() throws ServiceException {
-		String passport = "ab452716";
+		String passport = "udalenie";
 		boolean result = ServiceProvider.getInstance().getUserService().deleting(passport);
 		Assert.assertTrue(result);
 	}

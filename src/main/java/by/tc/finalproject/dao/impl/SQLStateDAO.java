@@ -18,7 +18,7 @@ public class SQLStateDAO implements StateDAO {
 	private static final String SQL_SELECT_STATE = "SELECT * FROM committee.state WHERE student_id=?";
 
 	@Override
-	public void addUserInState(Connection connection, State state) throws DAOException {
+	public void addUserInState(Connection connection, State state) throws SQLException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -30,8 +30,6 @@ public class SQLStateDAO implements StateDAO {
 			preparedStatement.setInt(5, state.getCertificateResult());
 			preparedStatement.setInt(6, countTotalScope(state));
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error while writing statement in table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);
@@ -59,7 +57,7 @@ public class SQLStateDAO implements StateDAO {
 	}
 
 	@Override
-	public void editStatement(Connection connection, int userId, State state) throws DAOException {
+	public void editStatement(Connection connection, int userId, State state) throws SQLException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -71,8 +69,6 @@ public class SQLStateDAO implements StateDAO {
 			preparedStatement.setInt(5, countTotalScope(state));
 			preparedStatement.setInt(6, userId);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error editing statement in table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);

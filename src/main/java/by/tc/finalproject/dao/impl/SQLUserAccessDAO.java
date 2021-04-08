@@ -22,7 +22,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 	private static final String SQL_SELECT_USER_ACCESS = "SELECT * FROM committee.user_access WHERE id=?";
 
 	@Override
-	public void addUserAccess(Connection connection, UserAccess userAccess) throws DAOException {
+	public void addUserAccess(Connection connection, UserAccess userAccess) throws SQLException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -31,8 +31,6 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			preparedStatement.setString(2, userAccess.getEmail());
 			preparedStatement.setString(3, userAccess.getPassword());
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error while writing user access to table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);
@@ -101,7 +99,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 	}
 
 	@Override
-	public void editUserAccess(Connection connection, int userId, UserAccess editUserAccess) throws DAOException {
+	public void editUserAccess(Connection connection, int userId, UserAccess editUserAccess) throws SQLException{
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -110,9 +108,7 @@ public class SQLUserAccessDAO implements UserAccessDAO {
 			preparedStatement.setString(2, editUserAccess.getPassword());
 			preparedStatement.setInt(3, userId);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error editing user access in table", e);
-		} finally {
+		}  finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);
 			}

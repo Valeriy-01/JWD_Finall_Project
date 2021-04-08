@@ -70,7 +70,7 @@ public class SQLUserDAO implements UserDAO {
 		}
 	}
 
-	private void addAllData(User user, Connection connection) throws DAOException {
+	private void addAllData(User user, Connection connection) throws DAOException, SQLException {
 		DAOProvider provider = DAOProvider.getInstance();
 		int id = findUserId(user.getPassport());
 		user.getUserAccess().setId(id);
@@ -230,7 +230,7 @@ public class SQLUserDAO implements UserDAO {
 
 	}
 
-	private void editAllData(User editUser, Connection connection, int userId) throws DAOException {
+	private void editAllData(User editUser, Connection connection, int userId) throws DAOException, SQLException {
 		DAOProvider provider = DAOProvider.getInstance();
 		provider.getStateDAO().editStatement(connection, userId, editUser.getState());
 		provider.getUserAccessDAO().editUserAccess(connection, userId, editUser.getUserAccess());

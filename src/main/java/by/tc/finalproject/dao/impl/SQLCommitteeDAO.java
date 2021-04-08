@@ -13,7 +13,7 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 public class SQLCommitteeDAO implements CommitteeDAO {
 
 	private static final String SQL_INSERT_COMMITTEE = "INSERT INTO committee.committee (email, password,login) VALUES(?,?,?)";
-	private static final String SQL_UPDATE_COMMITTEE = "UPDATE committee.committee SET email=?,password=?,login=? WHERE login=?";
+	private static final String SQL_UPDATE_COMMITTEE = "UPDATE committee.committee SET email=?,password=? WHERE login=?";
 	private static final String SQL_DELETE_COMMITTEE = "DELETE FROM committee.committee WHERE login=?";
 	private static final String SQL_EXIST_COMMITTEE = "SELECT * FROM committee.committee WHERE email=? and password=?";
 
@@ -95,8 +95,7 @@ public class SQLCommitteeDAO implements CommitteeDAO {
 				preparedStatement = connection.prepareStatement(SQL_UPDATE_COMMITTEE);
 				preparedStatement.setString(1, committee.getEmail());
 				preparedStatement.setString(2, committee.getPassword());
-				preparedStatement.setString(3, committee.getLogin());
-				preparedStatement.setString(4, login);
+				preparedStatement.setString(3, login);
 				preparedStatement.executeUpdate();
 			} catch (SQLException | ConnectionPoolException e) {
 				throw new DAOException("Error editing committee in table", e);

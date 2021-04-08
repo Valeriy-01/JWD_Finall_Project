@@ -20,7 +20,7 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 	private static final String SQL_SELECT_PLAN = "SELECT * FROM committee.plan_requirements WHERE id=?";
 
 	@Override
-	public void addPlanRequirements(Connection connection, PlanRequirements planRequirements) throws DAOException {
+	public void addPlanRequirements(Connection connection, PlanRequirements planRequirements) throws SQLException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -29,8 +29,6 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			preparedStatement.setInt(2, planRequirements.getDialPlan());
 			preparedStatement.setInt(3, planRequirements.getPassingScope());
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error while writing plan requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);
@@ -57,7 +55,7 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 
 	@Override
 	public void editPlanRequirements(Connection connection, String facultyTitle, PlanRequirements planRequirements)
-			throws DAOException {
+			throws SQLException, DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		int facultyId = DAOProvider.getInstance().getFacultyDAO().findFacultyId(facultyTitle);
@@ -67,8 +65,6 @@ public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 			preparedStatement.setInt(2, planRequirements.getPassingScope());
 			preparedStatement.setInt(3, facultyId);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error editing plan requirements from table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);

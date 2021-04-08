@@ -21,7 +21,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 
 	@Override
 	public void addSubjectRequirements(Connection connection, SubjectRequirements subjectRequirements)
-			throws DAOException {
+			throws SQLException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
 		try {
@@ -31,8 +31,6 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			preparedStatement.setString(3, subjectRequirements.getSecondSubject());
 			preparedStatement.setString(4, subjectRequirements.getThirdSubject());
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error while writing subject requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);
@@ -60,7 +58,7 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 
 	@Override
 	public void editSubjectRequirements(Connection connection, String facultyTitle,
-			SubjectRequirements subjectsRequirements) throws DAOException {
+			SubjectRequirements subjectsRequirements) throws SQLException, DAOException {
 		int facultyId = DAOProvider.getInstance().getFacultyDAO().findFacultyId(facultyTitle);
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		PreparedStatement preparedStatement = null;
@@ -71,8 +69,6 @@ public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 			preparedStatement.setString(3, subjectsRequirements.getThirdSubject());
 			preparedStatement.setInt(4, facultyId);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException("Error editing subject requirements in table", e);
 		} finally {
 			if (preparedStatement != null) {
 				connectionPool.closePreparedStatement(preparedStatement);

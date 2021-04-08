@@ -64,7 +64,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 		}
 	}
 
-	private void addAllData(Faculty faculty, Connection connection) throws DAOException {
+	private void addAllData(Faculty faculty, Connection connection) throws DAOException, SQLException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
 		int facultyId = findFacultyId(faculty.getTitle());
 		faculty.getPlanRequirements().setId(facultyId);
@@ -158,7 +158,7 @@ public class SQLFacultyDAO implements FacultyDAO {
 		}
 	}
 
-	private void editAllData(Faculty editFaculty, String facultyTitle, Connection connection) throws DAOException {
+	private void editAllData(Faculty editFaculty, String facultyTitle, Connection connection) throws DAOException, SQLException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
 		daoProvider.getSubjectRequirementsDAO().editSubjectRequirements(connection, facultyTitle,
 				editFaculty.getSubjectRequirements());

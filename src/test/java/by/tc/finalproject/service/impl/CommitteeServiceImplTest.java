@@ -17,8 +17,8 @@ public class CommitteeServiceImplTest {
 
 	@Test
 	public void testAuthorizationX0001() throws ServiceException {
-		String email = "committee_01@mail.ru";
-		String password = "ddsdfew32fv";
+		String email = "exist@mail.ru";
+		String password = "12345678";
 		boolean result = ServiceProvider.getInstance().getCommitteeService().authorization(email, password);
 		Assert.assertTrue(result);
 	}
@@ -37,7 +37,7 @@ public class CommitteeServiceImplTest {
 
 	@Test
 	public void testDeletingUserX0001() throws ServiceException {
-		String passport = "ab3452385";
+		String passport = "udalenie";
 		boolean result = ServiceProvider.getInstance().getCommitteeService().deletingUser(passport);
 		Assert.assertTrue(result);
 	}
@@ -57,9 +57,10 @@ public class CommitteeServiceImplTest {
 	public void testEditingUserX0001() throws ServiceException {
 		UserAccess userAccess = new UserAccess("goreglyad_01@mail.ru", "hfkgun48nvv");
 		State state = new State(85, 97, 85, 98);
-		User user = new User("Горегляд", "Валерий", "ab452716", userAccess, state);
+		User user = new User("Былотредактирован", "Валерий", "ab452716", userAccess, state);
+		user.setFacultyTitle("Существует ли");
 
-		String passport = "ab3452385";
+		String passport = "ab452716";
 		boolean result = ServiceProvider.getInstance().getCommitteeService().editingUser(passport, user);
 		Assert.assertTrue(result);
 	}

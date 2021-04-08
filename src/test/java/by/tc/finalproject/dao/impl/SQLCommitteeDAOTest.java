@@ -22,12 +22,12 @@ public class SQLCommitteeDAOTest {
 
 	@Test
 	public void testInsertCommitteeX0001() throws DAOException, ConnectionPoolException, SQLException {
-		Committee committee = new Committee("committee_01@mail.ru", "ddsdfew32fv", "admin_09jfe");
+		Committee committee = new Committee("insert@mail.ru", "12345678", "insert");
 		DAOProvider daoProvider = DAOProvider.getInstance();
 		daoProvider.getCommitteeDAO().addCommittee(committee);
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT * FROM committee.committee WHERE email='committee_01@mail.ru' and password='ddsdfew32fv'");
+				"SELECT * FROM committee.committee WHERE email='insert@mail.ru' and password='12345678'");
 		Assert.assertTrue(preparedStatement.executeQuery().next());
 	}
 
@@ -38,7 +38,7 @@ public class SQLCommitteeDAOTest {
 	@Test
 	public void testIsExistCommitteeX0001() throws DAOException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		Assert.assertTrue(daoProvider.getCommitteeDAO().isExistCommittee("c@mail.ru", "12345678"));
+		Assert.assertTrue(daoProvider.getCommitteeDAO().isExistCommittee("exist@mail.ru", "12345678"));
 	}
 
 	/*
@@ -47,13 +47,13 @@ public class SQLCommitteeDAOTest {
 
 	@Test
 	public void testEditCommitteeX0001() throws DAOException, SQLException, ConnectionPoolException {
-		Committee editCommittee = new Committee("comm@mail.ru", "sdv32dwfef2", "administrator");
+		Committee editCommittee = new Committee("editation@mail.ru", "123456789", "edit");
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		daoProvider.getCommitteeDAO().editCommittee("admin_01", editCommittee);
+		daoProvider.getCommitteeDAO().editCommittee("edit", editCommittee);
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT * FROM committee.committee WHERE login='administrator'");
+				.prepareStatement("SELECT * FROM committee.committee WHERE email='editation@mail.ru'");
 		Assert.assertTrue(preparedStatement.executeQuery().next());
 	}
 
@@ -64,7 +64,7 @@ public class SQLCommitteeDAOTest {
 	@Test
 	public void testIsExistCommitteeX0002() throws DAOException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		Assert.assertFalse(daoProvider.getCommitteeDAO().isExistCommittee("co@mail.ru", "ddsdfew32fv"));
+		Assert.assertFalse(daoProvider.getCommitteeDAO().isExistCommittee("no_exist@mail.ru", "12345678"));
 	}
 
 	/*
@@ -74,10 +74,10 @@ public class SQLCommitteeDAOTest {
 	@Test
 	public void testDeleteCommitteeX0001() throws DAOException, ConnectionPoolException, SQLException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		daoProvider.getCommitteeDAO().deleteCommittee("admin_del");
+		daoProvider.getCommitteeDAO().deleteCommittee("delete");
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT * FROM committee.committee WHERE email='committee@mail.ru' and password='ddsdfew32fv'");
+				"SELECT * FROM committee.committee WHERE email='delete@mail.ru' and password='12345678'");
 		Assert.assertFalse(preparedStatement.executeQuery().next());
 	}
 
@@ -88,7 +88,7 @@ public class SQLCommitteeDAOTest {
 	@Test
 	public void testIsExistCommitteeX0004() throws DAOException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		Assert.assertFalse(daoProvider.getCommitteeDAO().isExistCommittee("committee@mail.ru", "ddsdfew32fv"));
+		Assert.assertFalse(daoProvider.getCommitteeDAO().isExistCommittee("committee@mail.ru", ""));
 	}
 
 }

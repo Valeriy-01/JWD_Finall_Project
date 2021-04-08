@@ -26,7 +26,7 @@ public class SQLFacultyDAOTest {
 	public void testInsertFacultyX0001() throws DAOException, ConnectionPoolException, SQLException {
 		PlanRequirements planRequirements = new PlanRequirements(2, 0);
 		SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
-		Faculty faculty = new Faculty("Факультет Компьютерных Систем И Сетей", planRequirements, subjectRequirements);
+		Faculty faculty = new Faculty("Вставка", planRequirements, subjectRequirements);
 
 		DAOProvider daoProvider = DAOProvider.getInstance();
 		daoProvider.getFacultyDAO().addFaculty(faculty);
@@ -34,7 +34,7 @@ public class SQLFacultyDAOTest {
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
-		preparedStatement.setString(1, "Факультет Компьютерных Систем И Сетей");
+		preparedStatement.setString(1, "Вставка");
 		ResultSet resultSet = preparedStatement.executeQuery();
 
 		Assert.assertTrue(resultSet.next());
@@ -48,7 +48,7 @@ public class SQLFacultyDAOTest {
 	@Test
 	public void testIsExistFacultyX0001() throws DAOException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Сетей");
+		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Существует ли");
 		Assert.assertTrue(result);
 	}
 
@@ -61,13 +61,13 @@ public class SQLFacultyDAOTest {
 
 		PlanRequirements planRequirements = new PlanRequirements(2, 0);
 		SubjectRequirements subjectRequirements = new SubjectRequirements("Математика", "Физика", "Русский язык");
-		Faculty editFaculty = new Faculty("Факультет Проектирования", planRequirements, subjectRequirements);
+		Faculty editFaculty = new Faculty("Факультет отредактированный", planRequirements, subjectRequirements);
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		daoProvider.getFacultyDAO().editFaculty("Факультет Для редактирования", editFaculty);
+		daoProvider.getFacultyDAO().editFaculty("Факультет для редактирования", editFaculty);
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
-		preparedStatement.setString(1, "Факультет Проектирования");
+		preparedStatement.setString(1, "Факультет отредактированный");
 		ResultSet resultSet = preparedStatement.executeQuery();
 
 		Assert.assertTrue(resultSet.next());
@@ -81,7 +81,7 @@ public class SQLFacultyDAOTest {
 	@Test
 	public void testIsExistFacultyX0002() throws DAOException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
-		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Факультет Систем");
+		boolean result = daoProvider.getFacultyDAO().isExistFaculty("Не содержит");
 		Assert.assertFalse(result);
 	}
 
