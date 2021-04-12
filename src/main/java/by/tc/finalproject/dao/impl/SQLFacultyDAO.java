@@ -17,14 +17,14 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLFacultyDAO implements FacultyDAO {
 
-	private static final String SQL_INSERT_FACULTY = "INSERT INTO committee.faculty(title) VALUES(?)";
-	private static final String SQL_SELECT_FACULTY_ID = "SELECT id FROM committee.faculty WHERE title=?";
-	private static final String SQL_UPDATE_FACULTY = "UPDATE committee.faculty SET title=? WHERE id=?";
-	private static final String SQL_DELETE_FACULTY = "DELETE FROM committee.faculty WHERE id=?";
-	private static final String SQL_EXIST_FACULTY = "SELECT * FROM committee.faculty WHERE title=?";
-	private static final String SQL_SELECT_FACULTY_TITLE = "SELECT title FROM committee.faculty WHERE id=?";
-	private static final String SQL_SELECT_FACULTY = "SELECT * FROM committee.faculty WHERE id=?";
-	private static final String SQL_SELECT_ALL_FACULTY = "SELECT * FROM committee.faculty";
+	private static final String SQL_INSERT_FACULTY = "INSERT INTO faculty(title) VALUES(?)";
+	private static final String SQL_SELECT_FACULTY_ID = "SELECT id FROM faculty WHERE title=?";
+	private static final String SQL_UPDATE_FACULTY = "UPDATE faculty SET title=? WHERE id=?";
+	private static final String SQL_DELETE_FACULTY = "DELETE FROM faculty WHERE id=?";
+	private static final String SQL_EXIST_FACULTY = "SELECT * FROM faculty WHERE title=?";
+	private static final String SQL_SELECT_FACULTY_TITLE = "SELECT title FROM faculty WHERE id=?";
+	private static final String SQL_SELECT_FACULTY = "SELECT * FROM faculty WHERE id=?";
+	private static final String SQL_SELECT_ALL_FACULTY = "SELECT * FROM faculty";
 
 	@Override
 	public void addFaculty(Faculty faculty) throws DAOException {

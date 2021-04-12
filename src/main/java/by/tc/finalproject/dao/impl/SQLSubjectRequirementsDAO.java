@@ -14,10 +14,10 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLSubjectRequirementsDAO implements SubjectRequirementsDAO {
 
-	private static final String SQL_INSERT_SUBJECT = "INSERT INTO committee.subjects_requirements(id,subject_1, subject_2,subject_3) VALUES(?,?,?,?)";
-	private static final String SQL_UPDATE_SUBJECT = "UPDATE committee.subjects_requirements SET subject_1=?, subject_2=?,subject_3=? WHERE id=?";
-	private static final String SQL_DELETE_SUBJECT = "DELETE FROM committee.subjects_requirements WHERE id=?";
-	private static final String SQL_SELECT_SUBJECT = "SELECT * FROM committee.subjects_requirements WHERE id=?";
+	private static final String SQL_INSERT_SUBJECT = "INSERT INTO subjects_requirements(id,subject_1, subject_2,subject_3) VALUES(?,?,?,?)";
+	private static final String SQL_UPDATE_SUBJECT = "UPDATE subjects_requirements SET subject_1=?, subject_2=?,subject_3=? WHERE id=?";
+	private static final String SQL_DELETE_SUBJECT = "DELETE FROM subjects_requirements WHERE id=?";
+	private static final String SQL_SELECT_SUBJECT = "SELECT * FROM subjects_requirements WHERE id=?";
 
 	@Override
 	public void addSubjectRequirements(Connection connection, SubjectRequirements subjectRequirements)

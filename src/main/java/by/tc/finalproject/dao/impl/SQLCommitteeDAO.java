@@ -12,10 +12,10 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLCommitteeDAO implements CommitteeDAO {
 
-	private static final String SQL_INSERT_COMMITTEE = "INSERT INTO committee.committee (email, password,login) VALUES(?,?,?)";
-	private static final String SQL_UPDATE_COMMITTEE = "UPDATE committee.committee SET email=?,password=? WHERE login=?";
-	private static final String SQL_DELETE_COMMITTEE = "DELETE FROM committee.committee WHERE login=?";
-	private static final String SQL_EXIST_COMMITTEE = "SELECT * FROM committee.committee WHERE email=? and password=?";
+	private static final String SQL_INSERT_COMMITTEE = "INSERT INTO committee (email, password,login) VALUES(?,?,?)";
+	private static final String SQL_UPDATE_COMMITTEE = "UPDATE committee SET email=?,password=? WHERE login=?";
+	private static final String SQL_DELETE_COMMITTEE = "DELETE FROM committee WHERE login=?";
+	private static final String SQL_EXIST_COMMITTEE = "SELECT * FROM committee WHERE email=? and password=?";
 
 	@Override
 	public void addCommittee(Committee committee) throws DAOException {

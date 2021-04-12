@@ -34,7 +34,7 @@ public class SQLUserDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.user WHERE passport=?");
+				.prepareStatement("SELECT id FROM user WHERE passport=?");
 		preparedStatement.setString(1, "11111111111");
 		ResultSet resultSet = preparedStatement.executeQuery();
 		Assert.assertTrue(resultSet.next());
@@ -67,7 +67,7 @@ public class SQLUserDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.user WHERE passport=?");
+				.prepareStatement("SELECT id FROM user WHERE passport=?");
 		preparedStatement.setString(1, "ab452716");
 		ResultSet resultSet = preparedStatement.executeQuery();
 		Assert.assertTrue(resultSet.next());
@@ -84,8 +84,8 @@ public class SQLUserDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.user WHERE passport=?");
-		preparedStatement.setString(1, "ab452716");
+				.prepareStatement("SELECT id FROM user WHERE passport=?");
+		preparedStatement.setString(1, "udalenie");
 		ResultSet resultSet = preparedStatement.executeQuery();
 
 		Assert.assertFalse(resultSet.next());

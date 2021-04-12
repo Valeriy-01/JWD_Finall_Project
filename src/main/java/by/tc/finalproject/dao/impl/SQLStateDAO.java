@@ -12,10 +12,10 @@ import by.tc.finalproject.dao.pool.ConnectionPool;
 import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLStateDAO implements StateDAO {
-	private static final String SQL_INSERT_STATE = "INSERT INTO committee.state(student_id, sub_result_1,sub_result_2,sub_result_3,certificate_result,total_scope) VALUES(?,?,?,?,?,?)";
-	private static final String SQL_UPDATE_STATE = "UPDATE committee.state SET sub_result_1=?, sub_result_2=?, sub_result_3=?, certificate_result=?, total_scope=? WHERE student_id=?";
-	private static final String SQL_DELETE_STATE = "DELETE FROM committee.state WHERE student_id=?";
-	private static final String SQL_SELECT_STATE = "SELECT * FROM committee.state WHERE student_id=?";
+	private static final String SQL_INSERT_STATE = "INSERT INTO state(student_id, sub_result_1,sub_result_2,sub_result_3,certificate_result,total_scope) VALUES(?,?,?,?,?,?)";
+	private static final String SQL_UPDATE_STATE = "UPDATE state SET sub_result_1=?, sub_result_2=?, sub_result_3=?, certificate_result=?, total_scope=? WHERE student_id=?";
+	private static final String SQL_DELETE_STATE = "DELETE FROM state WHERE student_id=?";
+	private static final String SQL_SELECT_STATE = "SELECT * FROM state WHERE student_id=?";
 
 	@Override
 	public void addUserInState(Connection connection, State state) throws SQLException {

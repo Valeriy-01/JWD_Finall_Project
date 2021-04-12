@@ -27,7 +27,7 @@ public class SQLCommitteeDAOTest {
 		daoProvider.getCommitteeDAO().addCommittee(committee);
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT * FROM committee.committee WHERE email='insert@mail.ru' and password='12345678'");
+				"SELECT * FROM committee WHERE email='insert@mail.ru' and password='12345678'");
 		Assert.assertTrue(preparedStatement.executeQuery().next());
 	}
 
@@ -53,7 +53,7 @@ public class SQLCommitteeDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT * FROM committee.committee WHERE email='editation@mail.ru'");
+				.prepareStatement("SELECT * FROM committee WHERE email='editation@mail.ru'");
 		Assert.assertTrue(preparedStatement.executeQuery().next());
 	}
 
@@ -77,7 +77,7 @@ public class SQLCommitteeDAOTest {
 		daoProvider.getCommitteeDAO().deleteCommittee("delete");
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT * FROM committee.committee WHERE email='delete@mail.ru' and password='12345678'");
+				"SELECT * FROM committee WHERE email='delete@mail.ru' and password='12345678'");
 		Assert.assertFalse(preparedStatement.executeQuery().next());
 	}
 

@@ -18,15 +18,15 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLUserDAO implements UserDAO {
 
-	private static final String SQL_INSERT_USER = "INSERT INTO committee.user (faculty_id,surname,name,passport) VALUES(?,?,?,?)";
-	private static final String SQL_SELECT_USER_ID = "SELECT id FROM committee.user WHERE passport=?";
-	private static final String SQL_UPDATE_USER = "UPDATE committee.user SET faculty_id=?,surname=?,name=?,passport=? WHERE id=?";
-	private static final String SQL_DELETE_USER = "DELETE FROM committee.user WHERE id=?";
-	private static final String SQL_EXIST_USER = "SELECT * FROM committee.user WHERE passport=?";
-	private static final String SQL_SELECT_USER = "SELECT * FROM committee.user WHERE id=?";
-	private static final String SQL_SELECT_ALL_USER = "SELECT * FROM committee.user";
-	private static final String SQL_SELECT_ALL_USER_WITH_ID = "SELECT * FROM committee.user WHERE faculty_id=?";
-	private static final String SQL_SELECT_MAX_USER_ID = "SELECT MAX(id) FROM committee.user";
+	private static final String SQL_INSERT_USER = "INSERT INTO user (faculty_id,surname,name,passport) VALUES(?,?,?,?)";
+	private static final String SQL_SELECT_USER_ID = "SELECT id FROM user WHERE passport=?";
+	private static final String SQL_UPDATE_USER = "UPDATE user SET faculty_id=?,surname=?,name=?,passport=? WHERE id=?";
+	private static final String SQL_DELETE_USER = "DELETE FROM user WHERE id=?";
+	private static final String SQL_EXIST_USER = "SELECT * FROM user WHERE passport=?";
+	private static final String SQL_SELECT_USER = "SELECT * FROM user WHERE id=?";
+	private static final String SQL_SELECT_ALL_USER = "SELECT * FROM user";
+	private static final String SQL_SELECT_ALL_USER_WITH_ID = "SELECT * FROM user WHERE faculty_id=?";
+	private static final String SQL_SELECT_MAX_USER_ID = "SELECT MAX(id) FROM user";
 	private static final int UNKNOWN_CONDITION = -1;
 
 	@Override

@@ -14,10 +14,10 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLPlanRequirementsDAO implements PlanRequirementsDAO {
 
-	private static final String SQL_INSERT_PLAN = "INSERT INTO committee.plan_requirements(id,dial_plan, passing_scope) VALUES(?,?,?)";
-	private static final String SQL_UPDATE_PLAN = "UPDATE committee.plan_requirements SET dial_plan=?,passing_scope=? WHERE id=?";
-	private static final String SQL_DELETE_PLAN = "DELETE FROM committee.plan_requirements WHERE id=?";
-	private static final String SQL_SELECT_PLAN = "SELECT * FROM committee.plan_requirements WHERE id=?";
+	private static final String SQL_INSERT_PLAN = "INSERT INTO plan_requirements(id,dial_plan, passing_scope) VALUES(?,?,?)";
+	private static final String SQL_UPDATE_PLAN = "UPDATE plan_requirements SET dial_plan=?,passing_scope=? WHERE id=?";
+	private static final String SQL_DELETE_PLAN = "DELETE FROM plan_requirements WHERE id=?";
+	private static final String SQL_SELECT_PLAN = "SELECT * FROM plan_requirements WHERE id=?";
 
 	@Override
 	public void addPlanRequirements(Connection connection, PlanRequirements planRequirements) throws SQLException {

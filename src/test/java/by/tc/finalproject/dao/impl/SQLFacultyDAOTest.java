@@ -33,7 +33,7 @@ public class SQLFacultyDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+				.prepareStatement("SELECT id FROM faculty WHERE title=?");
 		preparedStatement.setString(1, "Вставка");
 		ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -64,9 +64,10 @@ public class SQLFacultyDAOTest {
 		Faculty editFaculty = new Faculty("Факультет отредактированный", planRequirements, subjectRequirements);
 		DAOProvider daoProvider = DAOProvider.getInstance();
 		daoProvider.getFacultyDAO().editFaculty("Факультет для редактирования", editFaculty);
+		
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+				.prepareStatement("SELECT id FROM faculty WHERE title=?");
 		preparedStatement.setString(1, "Факультет отредактированный");
 		ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -97,7 +98,7 @@ public class SQLFacultyDAOTest {
 
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("SELECT id FROM committee.faculty WHERE title=?");
+				.prepareStatement("SELECT id FROM faculty WHERE title=?");
 		preparedStatement.setString(1, "Факультет Для удаления");
 		ResultSet resultSet = preparedStatement.executeQuery();
 

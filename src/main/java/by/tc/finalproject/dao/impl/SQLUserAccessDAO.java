@@ -13,13 +13,13 @@ import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLUserAccessDAO implements UserAccessDAO {
 
-	private static final String SQL_INSERT_USER_ACCESS = "INSERT INTO committee.user_access(id, email,password) VALUES(?,?,?)";
-	private static final String SQL_UPDATE_USER_ACCESS = "UPDATE committee.user_access SET email=?,password=? WHERE id=?";
-	private static final String SQL_DELETE_USER_ACCESS = "DELETE FROM committee.user_access WHERE id=?";
-	private static final String SQL_EXIST_LOGIN_USER_ACCESS = "SELECT * FROM committee.user_access WHERE email=? and password=?";
-	private static final String SQL_EXIST_USER_BY_EMAIL = "SELECT * FROM committee.user_access WHERE email=?";
-	private static final String SQL_SELECT_USER_ACCESS_ID = "SELECT id FROM committee.user_access WHERE email=? and password=?";
-	private static final String SQL_SELECT_USER_ACCESS = "SELECT * FROM committee.user_access WHERE id=?";
+	private static final String SQL_INSERT_USER_ACCESS = "INSERT INTO user_access(id, email,password) VALUES(?,?,?)";
+	private static final String SQL_UPDATE_USER_ACCESS = "UPDATE user_access SET email=?,password=? WHERE id=?";
+	private static final String SQL_DELETE_USER_ACCESS = "DELETE FROM user_access WHERE id=?";
+	private static final String SQL_EXIST_LOGIN_USER_ACCESS = "SELECT * FROM user_access WHERE email=? and password=?";
+	private static final String SQL_EXIST_USER_BY_EMAIL = "SELECT * FROM user_access WHERE email=?";
+	private static final String SQL_SELECT_USER_ACCESS_ID = "SELECT id FROM user_access WHERE email=? and password=?";
+	private static final String SQL_SELECT_USER_ACCESS = "SELECT * FROM user_access WHERE id=?";
 
 	@Override
 	public void addUserAccess(Connection connection, UserAccess userAccess) throws SQLException {

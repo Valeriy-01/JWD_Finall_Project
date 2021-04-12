@@ -33,7 +33,7 @@
 </c:if>
 
 <c:if test="${login == 1}">
-	<c:remove var="error" scope="session" />
+	<c:remove var="login" scope="session" />
 	<div id="overlay">
 		<div class="popup">
 			<h2>

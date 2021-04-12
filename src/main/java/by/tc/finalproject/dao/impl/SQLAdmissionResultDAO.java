@@ -13,10 +13,10 @@ import by.tc.finalproject.dao.pool.ConnectionPool;
 import by.tc.finalproject.dao.pool.exception.ConnectionPoolException;
 
 public class SQLAdmissionResultDAO implements AdmissionResultDAO {
-	private static final String SQL_INSERT_ADMISSION = "INSERT INTO committee.admission_result(student_id, result) VALUES(?,?)";
-	private static final String SQL_UPDATE_ADMISSION = "UPDATE committee.admission_result SET result=? WHERE student_id=?";
-	private static final String SQL_DELETE_ADMISSION = "DELETE FROM committee.admission_result WHERE student_id=?";
-	private static final String SQL_SELECT_ADMISSION = "SELECT * FROM committee.admission_result WHERE student_id=?";
+	private static final String SQL_INSERT_ADMISSION = "INSERT INTO admission_result(student_id, result) VALUES(?,?)";
+	private static final String SQL_UPDATE_ADMISSION = "UPDATE admission_result SET result=? WHERE student_id=?";
+	private static final String SQL_DELETE_ADMISSION = "DELETE FROM admission_result WHERE student_id=?";
+	private static final String SQL_SELECT_ADMISSION = "SELECT * FROM admission_result WHERE student_id=?";
 
 	@Override
 	public void addAdmissionResult(Connection connection, int id, AdmissionResult admissionResult) throws DAOException {
