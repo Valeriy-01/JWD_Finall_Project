@@ -126,15 +126,14 @@ public class SQLFacultyDAO implements FacultyDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		int facultyId = findFacultyId(facultyTitle);
-		if (!isExistFaculty(editFaculty.getTitle())) {
 			try {
 				connection = connectionPool.getConnection();
 				connection.setAutoCommit(false);
 				preparedStatement = connection.prepareStatement(SQL_UPDATE_FACULTY);
-				editAllData(editFaculty, facultyTitle, connection);
 				preparedStatement.setString(1, editFaculty.getTitle());
 				preparedStatement.setInt(2, facultyId);
 				preparedStatement.executeUpdate();
+				editAllData(editFaculty, facultyTitle, connection);
 				connection.commit();
 			} catch (SQLException | ConnectionPoolException e) {
 				try {
@@ -156,7 +155,6 @@ public class SQLFacultyDAO implements FacultyDAO {
 				}
 			}
 		}
-	}
 
 	private void editAllData(Faculty editFaculty, String facultyTitle, Connection connection) throws DAOException, SQLException {
 		DAOProvider daoProvider = DAOProvider.getInstance();
