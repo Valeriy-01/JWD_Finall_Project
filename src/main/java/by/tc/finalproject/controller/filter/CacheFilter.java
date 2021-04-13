@@ -20,7 +20,6 @@ public class CacheFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
-
 		HttpServletResponse httpres = (HttpServletResponse) servletResponse;
 		httpres.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		httpres.setHeader("Pragma", "no-cache");

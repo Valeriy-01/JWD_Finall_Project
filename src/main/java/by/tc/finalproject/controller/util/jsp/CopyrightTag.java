@@ -1,4 +1,4 @@
-package by.tc.finalproject.service.util.jsp;
+package by.tc.finalproject.controller.util.jsp;
 
 import java.io.IOException;
 import java.util.Formatter;

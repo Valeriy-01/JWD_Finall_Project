@@ -9,18 +9,18 @@
 	<uri> /WEB-INF/tld/taglib.tld </uri>
 	<tag>
 		<name> copyright </name>
-		<tag-class>by.tc.finalproject.service.util.jsp.CopyrightTag
+		<tag-class>by.tc.finalproject.controller.util.jsp.CopyrightTag
 		</tag-class>
-		<body-content> empty </body-content>
+		<body-content>empty</body-content>
 		<attribute>
 			<name>owner</name>
-			<required> false </required>
-			<rtexprvalue> true </rtexprvalue>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
 			<name>year</name>
-			<required> false </required>
-			<rtexprvalue> true </rtexprvalue>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 

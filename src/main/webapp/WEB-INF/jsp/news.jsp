@@ -24,7 +24,7 @@
 			<div class="row justify-content-center">
 				<div class="col-md-9 mb-4">
 					<p class="mb-5">
-						<img src="images/8.jpg" alt="BSUIR" class="img-fluid">
+						<img src="images/news.jpg" alt="BSUIR" class="img-fluid">
 					</p>
 					<p>
 						<fmt:message key="news.description_1" />
