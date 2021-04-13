@@ -9,7 +9,7 @@
 	<uri> /WEB-INF/tld/taglib.tld </uri>
 	<tag>
 		<name> copyright </name>
-		<tag-class>by.tc.finalproject.controller.util.jsp.CopyrightTag
+		<tag-class>by.tc.applicant.controller.util.jsp.CopyrightTag
 		</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
