@@ -55,7 +55,7 @@
 			</div>
 			<div class="col-12">
 				<div class="copyright">
-					<page:copyright  owner="Waleriy Goreglyad" year="2021"/>
+					<page:copyright owner="Waleriy Goreglyad" year="2021"/>
 				</div>
 			</div>
 		</div>

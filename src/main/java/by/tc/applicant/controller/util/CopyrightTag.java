@@ -1,4 +1,4 @@
-package by.tc.applicant.controller.util.jsp;
+package by.tc.applicant.controller.util;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -34,6 +34,7 @@ public class CopyrightTag extends TagSupport {
 			out.write(P_TAG_START);
 			formatter = new Formatter();
 			out.write(createMessage(formatter));
+			out.write(P_TAG_END);
 		} catch (IOException e) {
 			log.error("Can`t write start tag", e);
 			throw new JspTagException(e);
@@ -42,18 +43,7 @@ public class CopyrightTag extends TagSupport {
 				formatter.close();
 			}
 		}
-		return EVAL_BODY_INCLUDE;
-	}
-
-	@Override
-	public int doEndTag() throws JspTagException {
-		try {
-			pageContext.getOut().write(P_TAG_END);
-		} catch (IOException e) {
-			log.error("Can`t write end tag", e);
-			throw new JspTagException(e);
-		}
-		return EVAL_PAGE;
+		return SKIP_BODY;
 	}
 
 	private String createMessage(Formatter formatter) {
